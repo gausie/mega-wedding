@@ -1,6 +1,12 @@
 import { extendTheme } from "@chakra-ui/react";
 
 export default extendTheme({
+  semanticTokens: {
+    colors: {
+      primary: '#F7C2D0',
+      highlight: '#f5cec8',
+    },
+  },
   colors: {
     success: {
       50: "#FFF5F7",

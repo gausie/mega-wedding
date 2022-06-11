@@ -8,12 +8,9 @@ export default function Header() {
   const navigate = useNavigate();
 
   return (
-    <Center bg="lightpink" py={4} mb={12} onClick={() => navigate("/")}>
+    <Center bg="primary" py={8} mb={12} onClick={() => navigate("/")} borderBottomStyle="solid" borderColor="highlight" borderBottomWidth={20}>
       <BezratHashem />
-      <HStack alignItems="center">
-        <Text textTransform="uppercase">The wedding of</Text>
-        <Logo height={60} />
-      </HStack>
+      <Logo height={100} />
     </Center>
   );
 }

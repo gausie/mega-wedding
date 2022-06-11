@@ -1,6 +1,5 @@
-import { Link, useNavigate, useTransition } from "@remix-run/react";
+import { useNavigate, useTransition } from "@remix-run/react";
 import {
-  Container,
   Stack,
   Text,
   HStack,
@@ -8,7 +7,7 @@ import {
   PinInputField,
   Button,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import Header from "~/components/Header";
 
@@ -20,35 +19,33 @@ export default function International() {
   const go = useCallback(() => navigate(pin), [pin]);
 
   return (
-    <main>
+    <Stack minHeight="100vh" spacing={0}>
       <Header />
 
-      <Container maxW="2xl">
-        <Stack spacing={8} alignItems="center">
-          <Text as="div">Please enter the code found in your email</Text>
+      <Stack flexGrow={1} spacing={8} alignItems="center" justifyContent="center" height="100%">
+        <Text as="div">Please enter the code found in your email</Text>
 
-          <Stack spacing={4}>
-            <HStack>
-              <PinInput type="alphanumeric" onChange={setPin}>
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-                <PinInputField />
-              </PinInput>
-            </HStack>
-            <input name="pin" type="hidden" value={pin} />
-            <Button
-              onClick={go}
-              disabled={pin.length < 6 || transition.state === "loading"}
-              isLoading={transition.state === "loading"}
-            >
-              Enter
-            </Button>
-          </Stack>
+        <Stack spacing={4}>
+          <HStack>
+            <PinInput type="alphanumeric" onChange={setPin}>
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+              <PinInputField />
+            </PinInput>
+          </HStack>
+          <input name="pin" type="hidden" value={pin} />
+          <Button
+            onClick={go}
+            disabled={pin.length < 6 || transition.state === "loading"}
+            isLoading={transition.state === "loading"}
+          >
+            Enter
+          </Button>
         </Stack>
-      </Container>
-    </main>
+      </Stack>
+    </Stack>
   );
 }
