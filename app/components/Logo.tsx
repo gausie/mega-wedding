@@ -1,12 +1,14 @@
 type Props = {
-  width?: number;
-  height?: number;
+  width?: string | number;
+  height?: string | number;
+  maxWidth?: string | number;
+  minWidth?: string | number;
 };
 
-export default function Logo({ width, height }: Props) {
-  let w = width === undefined && height === undefined ? 259 : width;
+export default function Logo({ width, height, maxWidth, minWidth }: Props) {
+  let w = width === undefined && height === undefined ? "100%" : width;
   return (
-    <svg viewBox="0 0 259 108" width={w} height={height}>
+    <svg viewBox="0 0 259 108" style={{ width: w, height, maxWidth, minWidth }}>
       <text
         transform="translate(1.014 -.51)"
         fontFamily="'Great Vibes', cursive"

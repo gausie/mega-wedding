@@ -1,7 +1,3 @@
-import "@fontsource/im-fell-english-sc/index.css";
-import "@fontsource/great-vibes/index.css";
-import "@fontsource/bona-nova/index.css";
-
 import React, { useContext, useEffect } from "react";
 import { withEmotionCache } from "@emotion/react";
 import { ChakraProvider } from "@chakra-ui/react";
@@ -40,6 +36,9 @@ export const links: LinksFunction = () => [
   },
   { rel: "manifest", href: "/site.webmanifest" },
   { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5" },
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
+  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+  { href: "https://fonts.googleapis.com/css2?family=Bona+Nova&family=Great+Vibes&family=IM+Fell+English+SC&display=swap", rel: "stylesheet" },
 ];
 
 interface DocumentProps {
