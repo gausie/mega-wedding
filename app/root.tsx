@@ -9,10 +9,16 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useCatch,
 } from "@remix-run/react";
-
+import fontAwesomeStyles from '@fortawesome/fontawesome-svg-core/styles.css';
+import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core';
 import theme from "./theme";
 import { ClientStyleContext, ServerStyleContext } from "./context";
+import NotFound from "./components/NotFound";
+
+// Configure FontAwesome to work in an SRR environment
+fontAwesomeConfig.autoAddCss = false;
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -38,7 +44,8 @@ export const links: LinksFunction = () => [
   { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5" },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-  { href: "https://fonts.googleapis.com/css2?family=Bona+Nova&family=Great+Vibes&family=IM+Fell+English+SC&display=swap", rel: "stylesheet" },
+  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bona+Nova&family=Great+Vibes&family=IM+Fell+English+SC&display=swap" },
+  { rel: "stylesheet", href: fontAwesomeStyles },
 ];
 
 interface DocumentProps {
@@ -98,4 +105,20 @@ export default function App() {
       </ChakraProvider>
     </Document>
   );
+}
+
+export function CatchBoundary() {
+  const caught = useCatch();
+
+  if (caught.status === 404) {
+    return (
+      <Document>
+        <ChakraProvider theme={theme}>
+          <NotFound />
+        </ChakraProvider>
+      </Document>
+    );
+  }
+
+  throw new Error(`Unexpected caught response with status: ${caught.status}`);
 }

@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Text } from "@chakra-ui/react";
+import { Container, Flex, Text } from "@chakra-ui/react";
 
 import Splash from "~/components/Splash";
 import WeddingDate from "~/components/WeddingDate";

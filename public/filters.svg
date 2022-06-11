@@ -1,0 +1,11 @@
+<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
+
+      <defs>
+        <filter id="woodcut">
+            <feTurbulence baseFrequency="0.05" type="fractalNoise" numOctaves="3" seed="0" result="Texture_10" />
+            <feMorphology operator="dilate" radius="1" in="SourceAlpha" result="OUTLINE_10" />
+            <feComposite operator="out" in="OUTLINE_10" in2="SourceAlpha" result="OUTLINE_20" />
+            <feDisplacementMap scale="0.5" in="OUTLINE_20" in2="Texture_10" result="OUTLINE_30" />
+        </filter>
+      </defs>
+    </svg>

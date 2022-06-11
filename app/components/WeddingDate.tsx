@@ -31,22 +31,22 @@ export default function WeddingDate() {
       <time dateTime="2023-06-18">18th June 2023</time>
       <div>
         <Menu>
-          <MenuButton>
-            <FontAwesomeIcon icon={faCalendarDays} />
+          <MenuButton maxW={21}>
+            <FontAwesomeIcon icon={faCalendarDays} style={{ filter: "url(/filters.svg#woodcut)"}} />
           </MenuButton>
           <MenuList>
-            <MenuItem icon={<FontAwesomeIcon icon={faGoogle} />}>
+            <MenuItem icon={<FontAwesomeIcon icon={faGoogle} style={{ filter: "url(/filters.svg#woodcut)" }} />}>
               <a href={google.render()} target="_blank">
                 Add to Google Calendar
               </a>
             </MenuItem>
             <MenuItem
-              icon={<FontAwesomeIcon icon={faApple} />}
+              icon={<FontAwesomeIcon icon={faApple} style={{ filter: "url(/filters.svg#woodcut)" }} />}
               onClick={() => ical.download()}
             >
               Add to Apple Calendar
             </MenuItem>
-            <MenuItem icon={<FontAwesomeIcon icon={faMicrosoft} />}>
+            <MenuItem icon={<FontAwesomeIcon icon={faMicrosoft} style={{ filter: "url(/filters.svg#woodcut)" }} />}>
               <a href={outlook.render()} target="_blank">
                 Add to Outlook
               </a>
