@@ -11,8 +11,8 @@ import {
   ScrollRestoration,
   useCatch,
 } from "@remix-run/react";
-import fontAwesomeStyles from '@fortawesome/fontawesome-svg-core/styles.css';
-import { config as fontAwesomeConfig } from '@fortawesome/fontawesome-svg-core';
+import fontAwesomeStyles from "@fortawesome/fontawesome-svg-core/styles.css";
+import { config as fontAwesomeConfig } from "@fortawesome/fontawesome-svg-core";
 import theme from "./theme";
 import { ClientStyleContext, ServerStyleContext } from "./context";
 import NotFound from "./components/NotFound";
@@ -43,8 +43,15 @@ export const links: LinksFunction = () => [
   { rel: "manifest", href: "/site.webmanifest" },
   { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5" },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-  { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Bona+Nova&family=Great+Vibes&family=IM+Fell+English+SC&display=swap" },
+  {
+    rel: "preconnect",
+    href: "https://fonts.gstatic.com",
+    crossOrigin: "anonymous",
+  },
+  {
+    rel: "stylesheet",
+    href: "https://fonts.googleapis.com/css2?family=Bona+Nova&family=Great+Vibes&family=IM+Fell+English+SC&display=swap",
+  },
   { rel: "stylesheet", href: fontAwesomeStyles },
 ];
 

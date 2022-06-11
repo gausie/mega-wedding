@@ -32,21 +32,43 @@ export default function WeddingDate() {
       <div>
         <Menu>
           <MenuButton maxW={21}>
-            <FontAwesomeIcon icon={faCalendarDays} style={{ filter: "url(/filters.svg#woodcut)"}} />
+            <FontAwesomeIcon
+              icon={faCalendarDays}
+              style={{ filter: "url(/filters.svg#woodcut)" }}
+            />
           </MenuButton>
           <MenuList>
-            <MenuItem icon={<FontAwesomeIcon icon={faGoogle} style={{ filter: "url(/filters.svg#woodcut)" }} />}>
+            <MenuItem
+              icon={
+                <FontAwesomeIcon
+                  icon={faGoogle}
+                  style={{ filter: "url(/filters.svg#woodcut)" }}
+                />
+              }
+            >
               <a href={google.render()} target="_blank">
                 Add to Google Calendar
               </a>
             </MenuItem>
             <MenuItem
-              icon={<FontAwesomeIcon icon={faApple} style={{ filter: "url(/filters.svg#woodcut)" }} />}
+              icon={
+                <FontAwesomeIcon
+                  icon={faApple}
+                  style={{ filter: "url(/filters.svg#woodcut)" }}
+                />
+              }
               onClick={() => ical.download()}
             >
               Add to Apple Calendar
             </MenuItem>
-            <MenuItem icon={<FontAwesomeIcon icon={faMicrosoft} style={{ filter: "url(/filters.svg#woodcut)" }} />}>
+            <MenuItem
+              icon={
+                <FontAwesomeIcon
+                  icon={faMicrosoft}
+                  style={{ filter: "url(/filters.svg#woodcut)" }}
+                />
+              }
+            >
               <a href={outlook.render()} target="_blank">
                 Add to Outlook
               </a>

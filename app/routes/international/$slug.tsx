@@ -1,4 +1,9 @@
-import { ActionFunction, LoaderFunction, redirect } from "@remix-run/node";
+import {
+  ActionFunction,
+  LinksFunction,
+  LoaderFunction,
+  redirect,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Form,
@@ -15,11 +20,19 @@ import {
   Button,
 } from "@chakra-ui/react";
 
+import Map from "react-map-gl";
+import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
+
 import supabase from "~/lib/supabase/supabase.server";
 import type { definitions } from "~/types/database";
 import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
 import WeddingDate from "~/components/WeddingDate";
+import WeddingMap from "~/components/WeddingMap";
+
+export const links: LinksFunction = () => [
+  { rel: "stylesheet", href: mapBoxStyles },
+];
 
 type InternationalTokens = definitions["international_tokens"];
 type International = definitions["international"];
@@ -149,6 +162,8 @@ export default function InternationalSlug() {
             We would be honoured to reserve a space for you with an expression
             of your intent to attend our wedding on the <WeddingDate />
           </Text>
+
+          <WeddingMap />
 
           <Text>Please indicate the intent of you and your party below</Text>
 

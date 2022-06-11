@@ -22,7 +22,13 @@ export default function International() {
     <Stack minHeight="100vh" spacing={0}>
       <Header />
 
-      <Stack flexGrow={1} spacing={8} alignItems="center" justifyContent="center" height="100%">
+      <Stack
+        flexGrow={1}
+        spacing={8}
+        alignItems="center"
+        justifyContent="center"
+        height="100%"
+      >
         <Text as="div">Please enter the code found in your email</Text>
 
         <Stack spacing={4}>
