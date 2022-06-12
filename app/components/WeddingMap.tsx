@@ -2,25 +2,25 @@ import { Text } from "@chakra-ui/react";
 import Map, { Layer, LayerProps, Marker, Source } from "react-map-gl";
 
 const geojson: GeoJSON.Feature<GeoJSON.Geometry> = {
-  'type': 'Feature',
-  'properties': {},
-  'geometry': {
-    'type': 'LineString',
-    'coordinates': [
+  type: "Feature",
+  properties: {},
+  geometry: {
+    type: "LineString",
+    coordinates: [
       [-2.7792507, 55.930328],
       [-3.0, 55.92],
-      [-3.2021022, 55.9485947]
-    ]
-  }
+      [-3.2021022, 55.9485947],
+    ],
+  },
 };
 
 const lineLayer: LayerProps = {
-  id: 'routelayer',
-  type: 'line',
+  id: "routelayer",
+  type: "line",
   paint: {
     "line-blur": 2,
     "line-width": 4,
-    "line-dasharray": [4,2],
+    "line-dasharray": [4, 2],
   },
   layout: {
     "line-join": "round",
@@ -43,9 +43,16 @@ export default function WeddingMap() {
       <Source id="route" type="geojson" data={geojson}>
         <Layer {...lineLayer} />
       </Source>
-      <Marker longitude={-2.7792507} latitude={55.930328} anchor="center" >
+      <Marker longitude={-2.7792507} latitude={55.930328} anchor="center">
         {/** Coulston */}
-        <Text fontFamily="serif" fontStyle="italic" fontSize="2xl" textShadow="-1px -1px  #cfb5a5,-1px -1px  #cfb5a5, 1px -1px  #cfb5a5, 1px 1px  #cfb5a5, -1px 1px #cfb5a5">X</Text>
+        <Text
+          fontFamily="serif"
+          fontStyle="italic"
+          fontSize="2xl"
+          textShadow="-1px -1px  #cfb5a5,-1px -1px  #cfb5a5, 1px -1px  #cfb5a5, 1px 1px  #cfb5a5, -1px 1px #cfb5a5"
+        >
+          X
+        </Text>
       </Marker>
     </Map>
   );

@@ -38,7 +38,8 @@ export const links: LinksFunction = () => [
 type InternationalTokens = definitions["international_tokens"];
 type International = definitions["international"];
 
-const fullname = (i?: International | InternationalTokens) => i ? `${i.firstname} ${i.lastname}` : "Unknown";
+const fullname = (i?: International | InternationalTokens) =>
+  i ? `${i.firstname} ${i.lastname}` : "Unknown";
 
 async function getInvitees(pin?: string) {
   let primary = null;
@@ -74,7 +75,11 @@ export const loader: LoaderFunction = async ({ params }) => {
   const primary = invitees[0];
 
   if (primary.last_visited_at === null) {
-    sendTelegramMessage(`${fullname(primary)} visited the International RSVP page for the first time`);
+    sendTelegramMessage(
+      `${fullname(
+        primary
+      )} visited the International RSVP page for the first time`
+    );
   }
 
   await supabase
@@ -95,7 +100,9 @@ export const action: ActionFunction = async ({ params, request }) => {
   // responses from guests. Furthermore, validate that this invite code has the permission to
   // respond for those invitees.
 
-  const invitees = new Map((await getInvitees(params.slug)).map((i) => [i.id || 0, i]));
+  const invitees = new Map(
+    (await getInvitees(params.slug)).map((i) => [i.id || 0, i])
+  );
 
   // This should never happen, should probably log this
   if (invitees.size === 0) return redirect("/");
@@ -142,8 +149,17 @@ export const action: ActionFunction = async ({ params, request }) => {
       .in("id", no),
   ]);
 
-
-  sendTelegramMessage(`New International RSVP:${yes.length > 0 ? `\n✔️: ${yes.map(i => fullname(invitees.get(i))).join(", ")}` : ""}${no.length > 0 ? `\n❌: ${no.map(i => fullname(invitees.get(i))).join(", ")}` : ""}`);
+  sendTelegramMessage(
+    `New International RSVP:${
+      yes.length > 0
+        ? `\n✔️: ${yes.map((i) => fullname(invitees.get(i))).join(", ")}`
+        : ""
+    }${
+      no.length > 0
+        ? `\n❌: ${no.map((i) => fullname(invitees.get(i))).join(", ")}`
+        : ""
+    }`
+  );
 
   return { success: true };
 };

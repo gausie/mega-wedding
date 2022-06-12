@@ -3,7 +3,7 @@ import { extendTheme } from "@chakra-ui/react";
 export default extendTheme({
   styles: {
     global: {
-      'html, body': {
+      "html, body": {
         height: "100%",
       },
     },
