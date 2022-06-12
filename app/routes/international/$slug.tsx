@@ -22,7 +22,7 @@ import {
 
 import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
 
-import supabase from "~/lib/supabase/supabase.server";
+import { supabase } from "~/lib/supabase.server";
 import { sendTelegramMessage } from "~/lib/telegram.server";
 
 import type { definitions } from "~/types/database";

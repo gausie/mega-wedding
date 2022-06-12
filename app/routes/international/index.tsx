@@ -7,7 +7,7 @@ import {
   PinInputField,
   Button,
 } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import Header from "~/components/Header";
 
@@ -16,7 +16,13 @@ export default function International() {
   const transition = useTransition();
   const [pin, setPin] = useState("");
 
-  const go = useCallback(() => navigate(pin), [pin]);
+  const go = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      navigate(pin);
+    },
+    [pin]
+  );
 
   return (
     <Stack minHeight="100%" spacing={0}>
@@ -31,26 +37,28 @@ export default function International() {
       >
         <Text as="div">Please enter the code found in your email</Text>
 
-        <Stack spacing={4}>
-          <HStack>
-            <PinInput type="alphanumeric" onChange={setPin}>
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-              <PinInputField />
-            </PinInput>
-          </HStack>
-          <input name="pin" type="hidden" value={pin} />
-          <Button
-            onClick={go}
-            disabled={pin.length < 6 || transition.state === "loading"}
-            isLoading={transition.state === "loading"}
-          >
-            Enter
-          </Button>
-        </Stack>
+        <form onSubmit={go}>
+          <Stack spacing={4}>
+            <HStack>
+              <PinInput type="alphanumeric" onChange={setPin}>
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+                <PinInputField />
+              </PinInput>
+            </HStack>
+            <input name="pin" type="hidden" value={pin} />
+            <Button
+              type="submit"
+              disabled={pin.length < 6}
+              isLoading={transition.state === "loading"}
+            >
+              Enter
+            </Button>
+          </Stack>
+        </form>
       </Stack>
     </Stack>
   );
