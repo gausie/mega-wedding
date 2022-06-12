@@ -19,7 +19,7 @@ export default function International() {
   const go = useCallback(() => navigate(pin), [pin]);
 
   return (
-    <Stack minHeight="100vh" spacing={0}>
+    <Stack minHeight="100%" spacing={0}>
       <Header />
 
       <Stack

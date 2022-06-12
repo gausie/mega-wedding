@@ -20,10 +20,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import Map from "react-map-gl";
 import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
 
 import supabase from "~/lib/supabase/supabase.server";
+import { sendTelegramMessage } from "~/lib/telegram.server";
+
 import type { definitions } from "~/types/database";
 import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
@@ -36,6 +37,8 @@ export const links: LinksFunction = () => [
 
 type InternationalTokens = definitions["international_tokens"];
 type International = definitions["international"];
+
+const fullname = (i?: International | InternationalTokens) => i ? `${i.firstname} ${i.lastname}` : "Unknown";
 
 async function getInvitees(pin?: string) {
   let primary = null;
@@ -68,6 +71,12 @@ export const loader: LoaderFunction = async ({ params }) => {
 
   if (invitees.length === 0) return redirect("/international");
 
+  const primary = invitees[0];
+
+  if (primary.last_visited_at === null) {
+    sendTelegramMessage(`${fullname(primary)} visited the International RSVP page for the first time`);
+  }
+
   await supabase
     .from("international")
     .update({ last_visited_at: new Date().toISOString() })
@@ -86,10 +95,10 @@ export const action: ActionFunction = async ({ params, request }) => {
   // responses from guests. Furthermore, validate that this invite code has the permission to
   // respond for those invitees.
 
-  const invitees = (await getInvitees(params.slug)).map((i) => i.id);
+  const invitees = new Map((await getInvitees(params.slug)).map((i) => [i.id || 0, i]));
 
   // This should never happen, should probably log this
-  if (invitees.length === 0) return redirect("/");
+  if (invitees.size === 0) return redirect("/");
 
   // This doesn't respect the beauty of FormData but nor do I. In case there are dupes
   // this will just use the last value we have
@@ -101,7 +110,7 @@ export const action: ActionFunction = async ({ params, request }) => {
     ([yes, no], [key, value]) => {
       const [type, stringId] = key.split(".");
       const id = Number(stringId);
-      if (!invitees.includes(id)) {
+      if (!invitees.has(id)) {
         // This should NEVER happen. Who is messing with my form?!?!
         naughty = true;
         return [yes, no];
@@ -133,6 +142,9 @@ export const action: ActionFunction = async ({ params, request }) => {
       .in("id", no),
   ]);
 
+
+  sendTelegramMessage(`New International RSVP:${yes.length > 0 ? `\n✔️: ${yes.map(i => fullname(invitees.get(i))).join(", ")}` : ""}${no.length > 0 ? `\n❌: ${no.map(i => fullname(invitees.get(i))).join(", ")}` : ""}`);
+
   return { success: true };
 };
 
@@ -151,10 +163,10 @@ export default function InternationalSlug() {
   })();
 
   return (
-    <main>
+    <>
       <Header />
 
-      <Container maxW="2xl">
+      <Container maxW="4xl" mb={16}>
         <Stack spacing={8} textAlign="center">
           <Heading>International Save the Date</Heading>
 
@@ -191,6 +203,6 @@ export default function InternationalSlug() {
           </Form>
         </Stack>
       </Container>
-    </main>
+    </>
   );
 }
