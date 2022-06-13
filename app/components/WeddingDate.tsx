@@ -43,10 +43,16 @@ function Icon({ icon }: { icon: IconProp }) {
   );
 }
 
-export default function WeddingDate() {
+type Props = {
+  dayOfWeek: boolean;
+};
+
+export default function WeddingDate({ dayOfWeek }: Props) {
   return (
-    <HStack display="inline-flex">
-      <time dateTime="2023-06-18">18th June 2023</time>
+    <HStack display="inline-flex" mr={1}>
+      <time dateTime="2023-06-18">
+        {dayOfWeek && "Sunday the "}18<sup>th</sup> June 2023
+      </time>
       <div>
         <Menu>
           <MenuButton maxW={21}>
