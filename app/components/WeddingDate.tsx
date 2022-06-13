@@ -37,12 +37,7 @@ function Icon({ icon }: { icon: IconProp }) {
           }
         `;
 
-        return (
-          <FontAwesomeIcon
-            className={filter}
-            icon={icon}
-          />
-        );
+        return <FontAwesomeIcon className={filter} icon={icon} />;
       }}
     </ClassNames>
   );
@@ -58,28 +53,18 @@ export default function WeddingDate() {
             <Icon icon={faCalendarDays} />
           </MenuButton>
           <MenuList>
-            <MenuItem
-              icon={
-                <Icon icon={faGoogle} />
-              }
-            >
+            <MenuItem icon={<Icon icon={faGoogle} />}>
               <a href={google.render()} target="_blank">
                 Add to Google Calendar
               </a>
             </MenuItem>
             <MenuItem
-              icon={
-                <Icon icon={faApple} />
-              }
+              icon={<Icon icon={faApple} />}
               onClick={() => ical.download()}
             >
               Add to Apple Calendar
             </MenuItem>
-            <MenuItem
-              icon={
-                <Icon icon={faMicrosoft} />
-              }
-            >
+            <MenuItem icon={<Icon icon={faMicrosoft} />}>
               <a href={outlook.render()} target="_blank">
                 Add to Outlook
               </a>

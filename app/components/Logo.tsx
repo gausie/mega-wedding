@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { ClassNames } from "@emotion/react";
 
 type Props = {
   width?: (string | number)[] | string | number;
