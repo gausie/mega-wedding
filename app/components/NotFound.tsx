@@ -14,12 +14,14 @@ export default function NotFound() {
         <Text fontSize="2xl">Page Not Found</Text>
       </Box>
       <Box borderStyle="solid" borderColor="highlight" borderWidth="20px">
-        <Image
-          borderStyle="solid"
-          borderColor="primary"
-          borderWidth="20px"
-          src="/possibli.gif"
-        />
+        <a href="https://www.youtube.com/watch?v=CwPWmEzoVbw" target="_blank">
+          <Image
+            borderStyle="solid"
+            borderColor="primary"
+            borderWidth="20px"
+            src="/possibli.gif"
+          />
+        </a>
       </Box>
     </Stack>
   );
