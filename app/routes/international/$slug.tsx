@@ -186,7 +186,7 @@ export default function InternationalSlug() {
       <Header />
 
       <Container maxW="6xl" mb={16}>
-        <SimpleGrid columns={2} spacing={4}>
+        <SimpleGrid columns={[1, 2]} spacing={[10, 8]}>
           <Stack spacing={8} textAlign="center">
             <Heading>Our Wedding</Heading>
 
