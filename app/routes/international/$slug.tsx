@@ -171,7 +171,7 @@ type ActionData = { success: true } | { success: false; reason: string };
 
 export default function InternationalSlug() {
   const transition = useTransition();
-  const users = useLoaderData() as International[];
+  const invitees = useLoaderData() as International[];
   const actionData = useActionData() as ActionData | undefined;
 
   const [buttonText, buttonColourScheme] = (() => {
@@ -188,24 +188,40 @@ export default function InternationalSlug() {
       <Container maxW="6xl" mb={16}>
         <SimpleGrid columns={2} spacing={4}>
           <Stack spacing={8} textAlign="center">
-            <Heading>International Save the Date</Heading>
+            <Heading>Our Wedding</Heading>
 
             <Text as="div">
-              We would be honoured to reserve a space for you with an expression
-              of your intent to attend our wedding on the <WeddingDate />
+              Our wedding will take place on <WeddingDate dayOfWeek />
+              <br />
+              in Haddington, seventeen miles east of our home in Edinburgh.
             </Text>
-            <Text>Please indicate the intent of you and your party below</Text>
+
+            <Text>
+              Please inform us whether{" "}
+              {invitees.length > 1 ? "your party" : "you"} intend to make the
+              journey. We kindly ask for your response by the{" "}
+              <b>
+                <time dateTime="2022-08-31">
+                  31<sup>st</sup> August 2022
+                </time>
+              </b>{" "}
+              to inform our planning.
+            </Text>
 
             <Form method="post">
               <fieldset>
-                <Stack alignItems="center" spacing={4}>
+                <Stack alignItems="center" spacing={8}>
                   <CheckboxGroup>
                     <Stack>
-                      {users.map((u) => (
-                        <RSVP key={u.id} user={u} />
+                      {invitees.map((i) => (
+                        <RSVP key={i.id} invitee={i} />
                       ))}
                     </Stack>
                   </CheckboxGroup>
+                  <Text>
+                    Responses can be amended any time between now and the time
+                    limit for responding.
+                  </Text>
                   <Button
                     colorScheme={buttonColourScheme}
                     type="submit"

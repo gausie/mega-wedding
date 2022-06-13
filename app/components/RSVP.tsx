@@ -5,28 +5,28 @@ import { definitions } from "~/types/database";
 type International = definitions["international"];
 
 type Props = {
-  user: International;
+  invitee: International;
 };
 
-export default function RSVP({ user }: Props) {
-  const [value, setValue] = useState(user.attending);
-  useEffect(() => setValue(user.attending), [user.attending]);
+export default function RSVP({ invitee }: Props) {
+  const [value, setValue] = useState(invitee.attending);
+  useEffect(() => setValue(invitee.attending), [invitee.attending]);
 
   const toggle = useCallback(() => setValue((v) => !v), []);
 
-  const title = user.responded_at
-    ? `Responded at ${user.responded_at}`
+  const title = invitee.responded_at
+    ? `Last responded at ${invitee.responded_at}`
     : "No response yet";
 
   return (
     <>
       <input
         type="hidden"
-        name={`rsvp.${user.id}`}
+        name={`rsvp.${invitee.id}`}
         value={value ? "true" : "false"}
       />
       <Checkbox isChecked={value} onChange={toggle} title={title}>
-        {user.firstname} {user.lastname}
+        {invitee.firstname} {invitee.lastname}
       </Checkbox>
     </>
   );

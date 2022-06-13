@@ -82,8 +82,7 @@ const geojson = {
   },
 };
 
-const dest =
-  geojson.geometry.coordinates[geojson.geometry.coordinates.length - 1];
+const dest = geojson.geometry.coordinates[0];
 
 const lineLayer: LayerProps = {
   id: "routelayer",
