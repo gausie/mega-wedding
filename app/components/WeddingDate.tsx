@@ -51,7 +51,7 @@ export default function WeddingDate({ dayOfWeek }: Props) {
   return (
     <HStack display="inline-flex" mr={1}>
       <time dateTime="2023-06-18">
-        {dayOfWeek && "Sunday the "}18<sup>th</sup> June 2023
+        {dayOfWeek && "Sunday the "}18<sup>th</sup> of June 2023
       </time>
       <div>
         <Menu>

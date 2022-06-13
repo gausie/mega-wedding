@@ -6,6 +6,7 @@ import {
   Text,
   Link,
   Heading,
+  Button,
 } from "@chakra-ui/react";
 import { Link as RemixLink } from "@remix-run/react";
 
@@ -28,11 +29,14 @@ export default function Index() {
         </Container>
       </Flex>
       <Text textAlign="center" fontSize="xl">
-        Nothing to see here just yet, unless you're an{" "}
-        <Link as={RemixLink} to="/international" color="primary">
-          international invitee
-        </Link>
-        .
+        <Button
+          variant="light"
+          colorScheme="primary"
+          as={RemixLink}
+          to="/international"
+        >
+          International Guest Response Form
+        </Button>
       </Text>
     </Stack>
   );

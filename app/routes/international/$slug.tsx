@@ -191,21 +191,34 @@ export default function InternationalSlug() {
             <Heading>Our Wedding</Heading>
 
             <Text as="div">
-              Our wedding will take place on <WeddingDate dayOfWeek />
-              <br />
-              in Haddington, seventeen miles east of our home in Edinburgh.
+              It would be a sincere pleasure to welcome you to Scotland on the
+              occasion of our wedding. On <WeddingDate dayOfWeek />, we will be
+              married in Haddington – 17 miles east of our home in central
+              Edinburgh.
             </Text>
 
             <Text>
-              Please inform us whether{" "}
-              {invitees.length > 1 ? "your party" : "you"} intend to make the
-              journey. We kindly ask for your response by the{" "}
+              We would be honoured to reserve a space for you with an expression
+              of your intent to make the journey. We kindly ask for your
+              response by the{" "}
               <b>
                 <time dateTime="2022-08-31">
-                  31<sup>st</sup> August 2022
+                  31<sup>st</sup> of August 2022
                 </time>
-              </b>{" "}
-              to inform our planning.
+              </b>
+              .
+            </Text>
+
+            <Text>
+              Please tick the box next to the name of any individual planning to
+              travel to Scotland for the wedding. Responses can be amended here
+              any time between now and the time limit.
+            </Text>
+
+            <Text>
+              Further details of the event will be made available in late
+              summer, but in the meantime please do not hesitate to reach out to
+              us with any queries.
             </Text>
 
             <Form method="post">
@@ -218,10 +231,6 @@ export default function InternationalSlug() {
                       ))}
                     </Stack>
                   </CheckboxGroup>
-                  <Text>
-                    Responses can be amended any time between now and the time
-                    limit for responding.
-                  </Text>
                   <Button
                     colorScheme={buttonColourScheme}
                     type="submit"
