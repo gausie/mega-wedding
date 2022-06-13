@@ -44,7 +44,7 @@ function Icon({ icon }: { icon: IconProp }) {
 }
 
 type Props = {
-  dayOfWeek: boolean;
+  dayOfWeek?: boolean;
 };
 
 export default function WeddingDate({ dayOfWeek }: Props) {
