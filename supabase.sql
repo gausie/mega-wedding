@@ -43,11 +43,11 @@ SET default_table_access_method = "heap";
 CREATE TABLE "public"."international" (
     "id" bigint NOT NULL,
     "firstname" "text" NOT NULL,
+    "lastname" "text" NOT NULL,
     "email" "text",
     "created_at" timestamp with time zone DEFAULT "now"(),
     "represented_by" bigint,
     "attending" boolean,
-    "lastname" "text" NOT NULL,
     "last_visited_at" timestamp with time zone,
     "responded_at" timestamp with time zone,
     "pin" "text" DEFAULT "substr"(("extensions"."uuid_generate_v4"())::"text", 0, 7) NOT NULL
