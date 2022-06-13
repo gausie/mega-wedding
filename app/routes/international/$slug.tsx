@@ -49,7 +49,7 @@ async function getInvitees(pin?: string) {
     const { data } = await supabase
       .from<InternationalTokens>("international_tokens")
       .select()
-      .eq("token", pin)
+      .eq("token", pin.toLowerCase())
       .limit(1)
       .single();
 
