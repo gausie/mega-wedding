@@ -7,6 +7,7 @@ export default function NotFound() {
       justifyContent="center"
       height="100%"
       spacing={10}
+      mx={4}
     >
       <Box textAlign="center">
         <Text fontSize="6xl">404</Text>
