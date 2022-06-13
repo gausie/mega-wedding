@@ -18,6 +18,7 @@ import {
   Text,
   CheckboxGroup,
   Button,
+  SimpleGrid,
 } from "@chakra-ui/react";
 
 import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
@@ -184,42 +185,42 @@ export default function InternationalSlug() {
     <>
       <Header />
 
-      <Container maxW="4xl" mb={16}>
-        <Stack spacing={8} textAlign="center">
-          <Heading>International Save the Date</Heading>
+      <Container maxW="6xl" mb={16}>
+        <SimpleGrid columns={2} spacing={4}>
+          <Stack spacing={8} textAlign="center">
+            <Heading>International Save the Date</Heading>
 
-          <Text as="div">
-            We would be honoured to reserve a space for you with an expression
-            of your intent to attend our wedding on the <WeddingDate />
-          </Text>
+            <Text as="div">
+              We would be honoured to reserve a space for you with an expression
+              of your intent to attend our wedding on the <WeddingDate />
+            </Text>
+            <Text>Please indicate the intent of you and your party below</Text>
 
+            <Form method="post">
+              <fieldset>
+                <Stack alignItems="center" spacing={4}>
+                  <CheckboxGroup>
+                    <Stack>
+                      {users.map((u) => (
+                        <RSVP key={u.id} user={u} />
+                      ))}
+                    </Stack>
+                  </CheckboxGroup>
+                  <Button
+                    colorScheme={buttonColourScheme}
+                    type="submit"
+                    isLoading={["loading", "submitting"].includes(
+                      transition.state
+                    )}
+                  >
+                    {buttonText}
+                  </Button>
+                </Stack>
+              </fieldset>
+            </Form>
+          </Stack>
           <WeddingMap />
-
-          <Text>Please indicate the intent of you and your party below</Text>
-
-          <Form method="post">
-            <fieldset>
-              <Stack alignItems="center" spacing={4}>
-                <CheckboxGroup>
-                  <Stack>
-                    {users.map((u) => (
-                      <RSVP key={u.id} user={u} />
-                    ))}
-                  </Stack>
-                </CheckboxGroup>
-                <Button
-                  colorScheme={buttonColourScheme}
-                  type="submit"
-                  isLoading={["loading", "submitting"].includes(
-                    transition.state
-                  )}
-                >
-                  {buttonText}
-                </Button>
-              </Stack>
-            </fieldset>
-          </Form>
-        </Stack>
+        </SimpleGrid>
       </Container>
     </>
   );

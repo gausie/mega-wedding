@@ -82,7 +82,8 @@ const geojson = {
   },
 };
 
-const dest = geojson.geometry.coordinates[0];
+const dest =
+  geojson.geometry.coordinates[geojson.geometry.coordinates.length - 1];
 
 const lineLayer: LayerProps = {
   id: "routelayer",
@@ -100,7 +101,7 @@ const lineLayer: LayerProps = {
 export default function WeddingMap() {
   return (
     <Map
-      style={{ width: "100%", height: "400px" }}
+      style={{ width: "100%", height: "100%", minHeight: "400px" }}
       mapStyle="mapbox://styles/gausie/cl4adr758000z14odoh4bf1rd"
       initialViewState={{
         longitude: -3,
