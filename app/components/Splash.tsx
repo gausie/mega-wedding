@@ -20,7 +20,7 @@ export default function Splash() {
         <Text fontSize={["xs", "lg", "4xl"]} textTransform="capitalize">
           The wedding of
         </Text>
-        <Logo maxWidth="60%" minWidth={200} />
+        <Logo maxWidth={["80%", "60%"]} minWidth={200} />
       </Stack>
     </Flex>
   );
