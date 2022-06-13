@@ -50,7 +50,7 @@ export const links: LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Bona+Nova&family=Great+Vibes&family=IM+Fell+English+SC&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Bona+Nova&family=Great+Vibes&family=IM+Fell+English+SC&family=IM+Fell+English&display=swap",
   },
   { rel: "stylesheet", href: fontAwesomeStyles },
 ];

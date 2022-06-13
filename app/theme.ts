@@ -41,15 +41,28 @@ export default extendTheme({
     },
   },
   fonts: {
-    heading: `'Great Vibes', cursive`,
-    body: `'IM Fell English SC', serif`,
+    heading: `'IM Fell English SC', serif`,
+    body: `'IM Fell English', serif`,
     hebrew: `'Bona Nova', serif`,
   },
   components: {
+    Heading: {
+      baseStyle: {
+        fontWeight: "normal",
+      },
+      variants: {
+        cursive: {
+          fontFamily: "'Great Vibes', cursive",
+        },
+      },
+    },
     Text: {
       variants: {
         hebrew: {
           fontFamily: "'Bona Nova', serif",
+        },
+        sc: {
+          fontFamily: "'IM Fell English SC', serif",
         },
       },
     },

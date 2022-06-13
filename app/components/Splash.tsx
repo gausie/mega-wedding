@@ -1,4 +1,4 @@
-import { Flex, Stack, Text } from "@chakra-ui/react";
+import { Flex, Heading, Stack } from "@chakra-ui/react";
 import BezratHashem from "./BezratHashem";
 import Logo from "./Logo";
 
@@ -17,9 +17,9 @@ export default function Splash() {
     >
       <BezratHashem />
       <Stack alignItems="center" width="100%">
-        <Text fontSize={["xs", "lg", "4xl"]} textTransform="capitalize">
+        <Heading fontSize={["xs", "lg", "4xl"]} textTransform="capitalize">
           The wedding of
-        </Text>
+        </Heading>
         <Logo maxWidth={["80%", "60%"]} minWidth={200} />
       </Stack>
     </Flex>

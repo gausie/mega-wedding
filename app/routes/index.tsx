@@ -5,6 +5,7 @@ import {
   Stack,
   Text,
   Link,
+  Heading,
 } from "@chakra-ui/react";
 import { Link as RemixLink } from "@remix-run/react";
 
@@ -19,10 +20,10 @@ export default function Index() {
         {/* Bottom info container - this holds a banner of info at the bottom of the welcome container */}
         <Container maxW="4xl" py={8}>
           <SimpleGrid columns={2} spacing="20px">
-            <Text fontSize={["xl", "2xl"]}>Near Edinburgh, Scotland</Text>
-            <Text as="div" fontSize={["xl", "2xl"]} textAlign="right">
+            <Heading fontSize={["xl", "2xl"]}>Near Edinburgh, Scotland</Heading>
+            <Heading as="div" fontSize={["xl", "2xl"]} textAlign="right">
               <WeddingDate />
-            </Text>
+            </Heading>
           </SimpleGrid>
         </Container>
       </Flex>
