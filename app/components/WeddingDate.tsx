@@ -13,6 +13,8 @@ import {
   faApple,
   faMicrosoft,
 } from "@fortawesome/free-brands-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { ClassNames } from "@emotion/react";
 
 const event: CalendarOptions = {
   title: "Hailey and Sam's Wedding",
@@ -25,6 +27,27 @@ const ical = new ICalendar(event);
 const google = new GoogleCalendar(event);
 const outlook = new OutlookCalendar(event);
 
+function Icon({ icon }: { icon: IconProp }) {
+  return (
+    <ClassNames>
+      {({ css }) => {
+        const filter = css`
+          @supports not (-webkit-touch-callout: none) {
+            filter: url(/filters.svg#woodcut);
+          }
+        `;
+
+        return (
+          <FontAwesomeIcon
+            className={filter}
+            icon={icon}
+          />
+        );
+      }}
+    </ClassNames>
+  );
+}
+
 export default function WeddingDate() {
   return (
     <HStack display="inline-flex">
@@ -32,18 +55,12 @@ export default function WeddingDate() {
       <div>
         <Menu>
           <MenuButton maxW={21}>
-            <FontAwesomeIcon
-              icon={faCalendarDays}
-              style={{ filter: "url(/filters.svg#woodcut)" }}
-            />
+            <Icon icon={faCalendarDays} />
           </MenuButton>
           <MenuList>
             <MenuItem
               icon={
-                <FontAwesomeIcon
-                  icon={faGoogle}
-                  style={{ filter: "url(/filters.svg#woodcut)" }}
-                />
+                <Icon icon={faGoogle} />
               }
             >
               <a href={google.render()} target="_blank">
@@ -52,10 +69,7 @@ export default function WeddingDate() {
             </MenuItem>
             <MenuItem
               icon={
-                <FontAwesomeIcon
-                  icon={faApple}
-                  style={{ filter: "url(/filters.svg#woodcut)" }}
-                />
+                <Icon icon={faApple} />
               }
               onClick={() => ical.download()}
             >
@@ -63,10 +77,7 @@ export default function WeddingDate() {
             </MenuItem>
             <MenuItem
               icon={
-                <FontAwesomeIcon
-                  icon={faMicrosoft}
-                  style={{ filter: "url(/filters.svg#woodcut)" }}
-                />
+                <Icon icon={faMicrosoft} />
               }
             >
               <a href={outlook.render()} target="_blank">
