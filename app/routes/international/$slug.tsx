@@ -100,12 +100,13 @@ export const action: ActionFunction = async ({ params, request }) => {
   // responses from guests. Furthermore, validate that this invite code has the permission to
   // respond for those invitees.
 
-  const invitees = new Map(
-    (await getInvitees(params.slug)).map((i) => [i.id || 0, i])
-  );
+  const [primary, inviteesMap] = await (async () => {
+    const invitees = await getInvitees(params.slug);
+    return [invitees[0], new Map(invitees.map((i) => [i.id || 0, i]))];
+  })();
 
   // This should never happen, should probably log this
-  if (invitees.size === 0) return redirect("/");
+  if (inviteesMap.size === 0) return redirect("/");
 
   // This doesn't respect the beauty of FormData but nor do I. In case there are dupes
   // this will just use the last value we have
@@ -117,7 +118,7 @@ export const action: ActionFunction = async ({ params, request }) => {
     ([yes, no], [key, value]) => {
       const [type, stringId] = key.split(".");
       const id = Number(stringId);
-      if (!invitees.has(id)) {
+      if (!inviteesMap.has(id)) {
         // This should NEVER happen. Who is messing with my form?!?!
         naughty = true;
         return [yes, no];
@@ -129,6 +130,7 @@ export const action: ActionFunction = async ({ params, request }) => {
   );
 
   if (naughty) {
+    sendTelegramMessage(`${fullname(primary)} attempted to fuck with the form`);
     return { success: false, reason: "Don't fuck with my form" };
   }
 
@@ -152,11 +154,11 @@ export const action: ActionFunction = async ({ params, request }) => {
   sendTelegramMessage(
     `New International RSVP:${
       yes.length > 0
-        ? `\n✔️: ${yes.map((i) => fullname(invitees.get(i))).join(", ")}`
+        ? `\n✔️: ${yes.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
         : ""
     }${
       no.length > 0
-        ? `\n❌: ${no.map((i) => fullname(invitees.get(i))).join(", ")}`
+        ? `\n❌: ${no.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
         : ""
     }`
   );
