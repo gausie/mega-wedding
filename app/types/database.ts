@@ -25,6 +25,7 @@ export interface paths {
           lastname?: parameters["rowFilter.international.lastname"];
           last_visited_at?: parameters["rowFilter.international.last_visited_at"];
           responded_at?: parameters["rowFilter.international.responded_at"];
+          pin?: parameters["rowFilter.international.pin"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -84,6 +85,7 @@ export interface paths {
           lastname?: parameters["rowFilter.international.lastname"];
           last_visited_at?: parameters["rowFilter.international.last_visited_at"];
           responded_at?: parameters["rowFilter.international.responded_at"];
+          pin?: parameters["rowFilter.international.pin"];
         };
         header: {
           /** Preference */
@@ -107,124 +109,11 @@ export interface paths {
           lastname?: parameters["rowFilter.international.lastname"];
           last_visited_at?: parameters["rowFilter.international.last_visited_at"];
           responded_at?: parameters["rowFilter.international.responded_at"];
+          pin?: parameters["rowFilter.international.pin"];
         };
         body: {
           /** international */
           international?: definitions["international"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-  };
-  "/international_tokens": {
-    get: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.international_tokens.id"];
-          firstname?: parameters["rowFilter.international_tokens.firstname"];
-          email?: parameters["rowFilter.international_tokens.email"];
-          created_at?: parameters["rowFilter.international_tokens.created_at"];
-          represented_by?: parameters["rowFilter.international_tokens.represented_by"];
-          attending?: parameters["rowFilter.international_tokens.attending"];
-          lastname?: parameters["rowFilter.international_tokens.lastname"];
-          last_visited_at?: parameters["rowFilter.international_tokens.last_visited_at"];
-          responded_at?: parameters["rowFilter.international_tokens.responded_at"];
-          token?: parameters["rowFilter.international_tokens.token"];
-          /** Filtering Columns */
-          select?: parameters["select"];
-          /** Ordering */
-          order?: parameters["order"];
-          /** Limiting and Pagination */
-          offset?: parameters["offset"];
-          /** Limiting and Pagination */
-          limit?: parameters["limit"];
-        };
-        header: {
-          /** Limiting and Pagination */
-          Range?: parameters["range"];
-          /** Limiting and Pagination */
-          "Range-Unit"?: parameters["rangeUnit"];
-          /** Preference */
-          Prefer?: parameters["preferCount"];
-        };
-      };
-      responses: {
-        /** OK */
-        200: {
-          schema: definitions["international_tokens"][];
-        };
-        /** Partial Content */
-        206: unknown;
-      };
-    };
-    post: {
-      parameters: {
-        body: {
-          /** international_tokens */
-          international_tokens?: definitions["international_tokens"];
-        };
-        query: {
-          /** Filtering Columns */
-          select?: parameters["select"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** Created */
-        201: unknown;
-      };
-    };
-    delete: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.international_tokens.id"];
-          firstname?: parameters["rowFilter.international_tokens.firstname"];
-          email?: parameters["rowFilter.international_tokens.email"];
-          created_at?: parameters["rowFilter.international_tokens.created_at"];
-          represented_by?: parameters["rowFilter.international_tokens.represented_by"];
-          attending?: parameters["rowFilter.international_tokens.attending"];
-          lastname?: parameters["rowFilter.international_tokens.lastname"];
-          last_visited_at?: parameters["rowFilter.international_tokens.last_visited_at"];
-          responded_at?: parameters["rowFilter.international_tokens.responded_at"];
-          token?: parameters["rowFilter.international_tokens.token"];
-        };
-        header: {
-          /** Preference */
-          Prefer?: parameters["preferReturn"];
-        };
-      };
-      responses: {
-        /** No Content */
-        204: never;
-      };
-    };
-    patch: {
-      parameters: {
-        query: {
-          id?: parameters["rowFilter.international_tokens.id"];
-          firstname?: parameters["rowFilter.international_tokens.firstname"];
-          email?: parameters["rowFilter.international_tokens.email"];
-          created_at?: parameters["rowFilter.international_tokens.created_at"];
-          represented_by?: parameters["rowFilter.international_tokens.represented_by"];
-          attending?: parameters["rowFilter.international_tokens.attending"];
-          lastname?: parameters["rowFilter.international_tokens.lastname"];
-          last_visited_at?: parameters["rowFilter.international_tokens.last_visited_at"];
-          responded_at?: parameters["rowFilter.international_tokens.responded_at"];
-          token?: parameters["rowFilter.international_tokens.token"];
-        };
-        body: {
-          /** international_tokens */
-          international_tokens?: definitions["international_tokens"];
         };
         header: {
           /** Preference */
@@ -271,36 +160,11 @@ export interface definitions {
     last_visited_at?: string;
     /** Format: timestamp with time zone */
     responded_at?: string;
-  };
-  international_tokens: {
     /**
-     * Format: bigint
-     * @description Note:
-     * This is a Primary Key.<pk/>
+     * Format: text
+     * @default substr((extensions.uuid_generate_v4())::text, 0, 7)
      */
-    id?: number;
-    /** Format: text */
-    firstname?: string;
-    /** Format: text */
-    email?: string;
-    /** Format: timestamp with time zone */
-    created_at?: string;
-    /**
-     * Format: bigint
-     * @description Note:
-     * This is a Foreign Key to `international.id`.<fk table='international' column='id'/>
-     */
-    represented_by?: number;
-    /** Format: boolean */
-    attending?: boolean;
-    /** Format: text */
-    lastname?: string;
-    /** Format: timestamp with time zone */
-    last_visited_at?: string;
-    /** Format: timestamp with time zone */
-    responded_at?: string;
-    /** Format: text */
-    token?: string;
+    pin: string;
   };
 }
 
@@ -357,28 +221,8 @@ export interface parameters {
   "rowFilter.international.last_visited_at": string;
   /** Format: timestamp with time zone */
   "rowFilter.international.responded_at": string;
-  /** @description international_tokens */
-  "body.international_tokens": definitions["international_tokens"];
-  /** Format: bigint */
-  "rowFilter.international_tokens.id": string;
   /** Format: text */
-  "rowFilter.international_tokens.firstname": string;
-  /** Format: text */
-  "rowFilter.international_tokens.email": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.international_tokens.created_at": string;
-  /** Format: bigint */
-  "rowFilter.international_tokens.represented_by": string;
-  /** Format: boolean */
-  "rowFilter.international_tokens.attending": string;
-  /** Format: text */
-  "rowFilter.international_tokens.lastname": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.international_tokens.last_visited_at": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.international_tokens.responded_at": string;
-  /** Format: text */
-  "rowFilter.international_tokens.token": string;
+  "rowFilter.international.pin": string;
 }
 
 export interface operations {}

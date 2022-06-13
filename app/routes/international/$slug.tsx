@@ -36,10 +36,9 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: mapBoxStyles },
 ];
 
-type InternationalTokens = definitions["international_tokens"];
 type International = definitions["international"];
 
-const fullname = (i?: International | InternationalTokens) =>
+const fullname = (i?: International) =>
   i ? `${i.firstname} ${i.lastname}` : "Unknown";
 
 async function getInvitees(pin?: string) {
@@ -47,9 +46,10 @@ async function getInvitees(pin?: string) {
 
   if (pin) {
     const { data } = await supabase
-      .from<InternationalTokens>("international_tokens")
+      .from<International>("international")
       .select()
-      .eq("token", pin.toLowerCase())
+      .eq("pin", pin.toLowerCase())
+      .not("email", "is", null)
       .limit(1)
       .single();
 
