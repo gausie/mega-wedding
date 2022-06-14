@@ -55,10 +55,10 @@ export default function WeddingDate({ dayOfWeek }: Props) {
       </time>
       <div>
         <Menu>
-          <MenuButton maxW={21}>
+          <MenuButton maxW={21} aria-label="Add to calendar">
             <Icon icon={faCalendarDays} />
           </MenuButton>
-          <MenuList>
+          <MenuList fontFamily="body">
             <MenuItem icon={<Icon icon={faGoogle} />}>
               <a href={google.render()} target="_blank">
                 Add to Google Calendar

@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Heading } from "@chakra-ui/react";
 
 type Props = {
   width?: (string | number)[] | string | number;
@@ -11,7 +11,8 @@ export default function Logo({ width, height, maxWidth, minWidth }: Props) {
   let w = width === undefined && height === undefined ? "100%" : width;
 
   return (
-    <Box
+    <Heading
+      as="h1"
       width={w}
       height={height}
       maxWidth={maxWidth}
@@ -61,6 +62,6 @@ export default function Logo({ width, height, maxWidth, minWidth }: Props) {
           </tspan>
         </text>
       </svg>
-    </Box>
+    </Heading>
   );
 }
