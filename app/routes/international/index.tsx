@@ -35,7 +35,7 @@ export default function International() {
         justifyContent="center"
         height="100%"
       >
-        <Text as="div">Please enter the code found in your email</Text>
+        <Text as="div">Please enter the unique pin found in your email</Text>
 
         <form onSubmit={go}>
           <Stack spacing={4}>

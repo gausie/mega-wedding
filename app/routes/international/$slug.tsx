@@ -19,6 +19,7 @@ import {
   CheckboxGroup,
   Button,
   SimpleGrid,
+  Link,
 } from "@chakra-ui/react";
 
 import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
@@ -217,8 +218,11 @@ export default function InternationalSlug() {
 
             <Text>
               Further details of the event will be made available in late
-              summer, but in the meantime please do not hesitate to reach out to
-              us with any queries.
+              summer, but in the meantime please do not hesitate to{" "}
+              <Link color="primary" href="mailto:hello@haileyandsam.co.uk">
+                reach out to us
+              </Link>{" "}
+              with any queries.
             </Text>
 
             <Form method="post">
