@@ -2,6 +2,7 @@ import {
   ActionFunction,
   LinksFunction,
   LoaderFunction,
+  MetaFunction,
   redirect,
 } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -32,6 +33,10 @@ import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
 import WeddingDate from "~/components/WeddingDate";
 import WeddingMap from "~/components/WeddingMap";
+
+export const meta: MetaFunction = () => ({
+  robots: "noindex",
+});
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: mapBoxStyles },
