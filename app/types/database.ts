@@ -12,20 +12,21 @@ export interface paths {
       };
     };
   };
-  "/international": {
+  "/guests": {
     get: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.international.id"];
-          firstname?: parameters["rowFilter.international.firstname"];
-          email?: parameters["rowFilter.international.email"];
-          created_at?: parameters["rowFilter.international.created_at"];
-          represented_by?: parameters["rowFilter.international.represented_by"];
-          attending?: parameters["rowFilter.international.attending"];
-          lastname?: parameters["rowFilter.international.lastname"];
-          last_visited_at?: parameters["rowFilter.international.last_visited_at"];
-          responded_at?: parameters["rowFilter.international.responded_at"];
-          pin?: parameters["rowFilter.international.pin"];
+          id?: parameters["rowFilter.guests.id"];
+          firstname?: parameters["rowFilter.guests.firstname"];
+          email?: parameters["rowFilter.guests.email"];
+          created_at?: parameters["rowFilter.guests.created_at"];
+          represented_by?: parameters["rowFilter.guests.represented_by"];
+          attending?: parameters["rowFilter.guests.attending"];
+          lastname?: parameters["rowFilter.guests.lastname"];
+          last_visited_at?: parameters["rowFilter.guests.last_visited_at"];
+          responded_at?: parameters["rowFilter.guests.responded_at"];
+          pin?: parameters["rowFilter.guests.pin"];
+          international?: parameters["rowFilter.guests.international"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -47,7 +48,7 @@ export interface paths {
       responses: {
         /** OK */
         200: {
-          schema: definitions["international"][];
+          schema: definitions["guests"][];
         };
         /** Partial Content */
         206: unknown;
@@ -56,8 +57,8 @@ export interface paths {
     post: {
       parameters: {
         body: {
-          /** international */
-          international?: definitions["international"];
+          /** guests */
+          guests?: definitions["guests"];
         };
         query: {
           /** Filtering Columns */
@@ -76,16 +77,17 @@ export interface paths {
     delete: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.international.id"];
-          firstname?: parameters["rowFilter.international.firstname"];
-          email?: parameters["rowFilter.international.email"];
-          created_at?: parameters["rowFilter.international.created_at"];
-          represented_by?: parameters["rowFilter.international.represented_by"];
-          attending?: parameters["rowFilter.international.attending"];
-          lastname?: parameters["rowFilter.international.lastname"];
-          last_visited_at?: parameters["rowFilter.international.last_visited_at"];
-          responded_at?: parameters["rowFilter.international.responded_at"];
-          pin?: parameters["rowFilter.international.pin"];
+          id?: parameters["rowFilter.guests.id"];
+          firstname?: parameters["rowFilter.guests.firstname"];
+          email?: parameters["rowFilter.guests.email"];
+          created_at?: parameters["rowFilter.guests.created_at"];
+          represented_by?: parameters["rowFilter.guests.represented_by"];
+          attending?: parameters["rowFilter.guests.attending"];
+          lastname?: parameters["rowFilter.guests.lastname"];
+          last_visited_at?: parameters["rowFilter.guests.last_visited_at"];
+          responded_at?: parameters["rowFilter.guests.responded_at"];
+          pin?: parameters["rowFilter.guests.pin"];
+          international?: parameters["rowFilter.guests.international"];
         };
         header: {
           /** Preference */
@@ -100,20 +102,21 @@ export interface paths {
     patch: {
       parameters: {
         query: {
-          id?: parameters["rowFilter.international.id"];
-          firstname?: parameters["rowFilter.international.firstname"];
-          email?: parameters["rowFilter.international.email"];
-          created_at?: parameters["rowFilter.international.created_at"];
-          represented_by?: parameters["rowFilter.international.represented_by"];
-          attending?: parameters["rowFilter.international.attending"];
-          lastname?: parameters["rowFilter.international.lastname"];
-          last_visited_at?: parameters["rowFilter.international.last_visited_at"];
-          responded_at?: parameters["rowFilter.international.responded_at"];
-          pin?: parameters["rowFilter.international.pin"];
+          id?: parameters["rowFilter.guests.id"];
+          firstname?: parameters["rowFilter.guests.firstname"];
+          email?: parameters["rowFilter.guests.email"];
+          created_at?: parameters["rowFilter.guests.created_at"];
+          represented_by?: parameters["rowFilter.guests.represented_by"];
+          attending?: parameters["rowFilter.guests.attending"];
+          lastname?: parameters["rowFilter.guests.lastname"];
+          last_visited_at?: parameters["rowFilter.guests.last_visited_at"];
+          responded_at?: parameters["rowFilter.guests.responded_at"];
+          pin?: parameters["rowFilter.guests.pin"];
+          international?: parameters["rowFilter.guests.international"];
         };
         body: {
-          /** international */
-          international?: definitions["international"];
+          /** guests */
+          guests?: definitions["guests"];
         };
         header: {
           /** Preference */
@@ -129,8 +132,7 @@ export interface paths {
 }
 
 export interface definitions {
-  /** @description International Invites */
-  international: {
+  guests: {
     /**
      * Format: bigint
      * @description Note:
@@ -149,7 +151,7 @@ export interface definitions {
     /**
      * Format: bigint
      * @description Note:
-     * This is a Foreign Key to `international.id`.<fk table='international' column='id'/>
+     * This is a Foreign Key to `guests.id`.<fk table='guests' column='id'/>
      */
     represented_by?: number;
     /** Format: boolean */
@@ -165,6 +167,8 @@ export interface definitions {
      * @default substr((extensions.uuid_generate_v4())::text, 0, 7)
      */
     pin: string;
+    /** Format: boolean */
+    international: boolean;
   };
 }
 
@@ -201,28 +205,30 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
-  /** @description international */
-  "body.international": definitions["international"];
+  /** @description guests */
+  "body.guests": definitions["guests"];
   /** Format: bigint */
-  "rowFilter.international.id": string;
+  "rowFilter.guests.id": string;
   /** Format: text */
-  "rowFilter.international.firstname": string;
+  "rowFilter.guests.firstname": string;
   /** Format: text */
-  "rowFilter.international.email": string;
+  "rowFilter.guests.email": string;
   /** Format: timestamp with time zone */
-  "rowFilter.international.created_at": string;
+  "rowFilter.guests.created_at": string;
   /** Format: bigint */
-  "rowFilter.international.represented_by": string;
+  "rowFilter.guests.represented_by": string;
   /** Format: boolean */
-  "rowFilter.international.attending": string;
+  "rowFilter.guests.attending": string;
   /** Format: text */
-  "rowFilter.international.lastname": string;
+  "rowFilter.guests.lastname": string;
   /** Format: timestamp with time zone */
-  "rowFilter.international.last_visited_at": string;
+  "rowFilter.guests.last_visited_at": string;
   /** Format: timestamp with time zone */
-  "rowFilter.international.responded_at": string;
+  "rowFilter.guests.responded_at": string;
   /** Format: text */
-  "rowFilter.international.pin": string;
+  "rowFilter.guests.pin": string;
+  /** Format: boolean */
+  "rowFilter.guests.international": string;
 }
 
 export interface operations {}

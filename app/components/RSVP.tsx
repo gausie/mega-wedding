@@ -2,10 +2,10 @@ import { Checkbox } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { definitions } from "~/types/database";
 
-type International = definitions["international"];
+type Guest = definitions["guests"];
 
 type Props = {
-  invitee: International;
+  invitee: Guest;
 };
 
 export default function RSVP({ invitee }: Props) {

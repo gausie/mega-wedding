@@ -42,9 +42,9 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: mapBoxStyles },
 ];
 
-type International = definitions["international"];
+type Guest = definitions["guests"];
 
-const fullname = (i?: International) =>
+const fullname = (i?: Guest) =>
   i ? `${i.firstname} ${i.lastname}` : "Unknown";
 
 async function getInvitees(pin?: string) {
@@ -52,10 +52,11 @@ async function getInvitees(pin?: string) {
 
   if (pin) {
     const { data } = await supabase
-      .from<International>("international")
-      .select()
+      .from<Guest & { guests: Guest[] }>("guests")
+      .select(`*, guests(*)`)
+      .is("international", true)
+      .is("represented_by", null)
       .eq("pin", pin.toLowerCase())
-      .not("email", "is", null)
       .limit(1)
       .single();
 
@@ -64,14 +65,9 @@ async function getInvitees(pin?: string) {
 
   if (primary === null) return [];
 
-  const { data: secondaries } = await supabase
-    .from<International>("international")
-    .select()
-    .eq("represented_by", primary.id)
-    .order("firstname")
-    .order("lastname");
+  const secondaries = primary.guests;
 
-  return [primary, ...(secondaries || [])];
+  return [{ ...primary, guests: undefined }, ...secondaries];
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
@@ -90,7 +86,7 @@ export const loader: LoaderFunction = async ({ params }) => {
   }
 
   await supabase
-    .from("international")
+    .from("guests")
     .update({ last_visited_at: new Date().toISOString() })
     .in(
       "id",
@@ -143,14 +139,14 @@ export const action: ActionFunction = async ({ params, request }) => {
 
   await Promise.all([
     supabase
-      .from<International>("international")
+      .from<Guest>("guest")
       .update({
         attending: true,
         responded_at: new Date().toISOString(),
       })
       .in("id", yes),
     supabase
-      .from<International>("international")
+      .from<Guest>("guest")
       .update({
         attending: false,
         responded_at: new Date().toISOString(),
@@ -177,7 +173,7 @@ type ActionData = { success: true } | { success: false; reason: string };
 
 export default function InternationalSlug() {
   const transition = useTransition();
-  const invitees = useLoaderData() as International[];
+  const invitees = useLoaderData() as Guest[];
   const actionData = useActionData() as ActionData | undefined;
 
   const [buttonText, buttonColourScheme] = (() => {
