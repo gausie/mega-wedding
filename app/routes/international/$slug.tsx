@@ -139,14 +139,14 @@ export const action: ActionFunction = async ({ params, request }) => {
 
   await Promise.all([
     supabase
-      .from<Guest>("guest")
+      .from<Guest>("guests")
       .update({
         attending: true,
         responded_at: new Date().toISOString(),
       })
       .in("id", yes),
     supabase
-      .from<Guest>("guest")
+      .from<Guest>("guests")
       .update({
         attending: false,
         responded_at: new Date().toISOString(),
