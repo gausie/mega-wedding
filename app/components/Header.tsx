@@ -1,7 +1,7 @@
 import { Center } from "@chakra-ui/react";
 import { useNavigate } from "@remix-run/react";
 
-import BezratHashem from "./BezratHashem";
+import BezrasHashem from "./BezrasHashem";
 import Logo from "./Logo";
 
 export default function Header() {
@@ -17,7 +17,7 @@ export default function Header() {
       borderColor="highlight"
       borderBottomWidth={20}
     >
-      <BezratHashem />
+      <BezrasHashem />
       <Logo height={100} />
     </Center>
   );

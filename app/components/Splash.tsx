@@ -1,5 +1,5 @@
 import { Flex, Heading, Stack } from "@chakra-ui/react";
-import BezratHashem from "./BezratHashem";
+import BezrasHashem from "./BezrasHashem";
 import Logo from "./Logo";
 
 export default function Splash() {
@@ -15,7 +15,7 @@ export default function Splash() {
       borderWidth={[20, 40]}
       position="relative"
     >
-      <BezratHashem />
+      <BezrasHashem />
       <Stack alignItems="center" width="100%">
         <Heading fontSize={["xs", "lg", "4xl"]} textTransform="capitalize">
           The wedding of
