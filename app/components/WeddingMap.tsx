@@ -118,7 +118,7 @@ export default function WeddingMap() {
         <Layer {...lineLayer} />
       </Source>
       <Marker longitude={dest[0]} latitude={dest[1]} anchor="center">
-        {/** Coulston */}
+        {/** Colstoun */}
         <Text
           fontFamily="serif"
           fontStyle="italic"
