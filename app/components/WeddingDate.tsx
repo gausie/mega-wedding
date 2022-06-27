@@ -18,8 +18,8 @@ import { ClassNames } from "@emotion/react";
 
 const event: CalendarOptions = {
   title: "Hailey and Sam's Wedding",
-  location: "Coulston House, Haddington, Scotland, UK",
-  start: new Date("2023-06-18T14:00:00"),
+  location: "Colstoun House, Haddington, Scotland, UK",
+  start: new Date("2023-06-18T13:30:00"),
   end: new Date("2023-06-19T00:00:00"),
 };
 
