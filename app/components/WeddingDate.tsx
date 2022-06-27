@@ -47,6 +47,10 @@ type Props = {
   dayOfWeek?: boolean;
 };
 
+function openInBlank(url: string) {
+  window.open(url);
+}
+
 export default function WeddingDate({ dayOfWeek }: Props) {
   return (
     <HStack display="inline-flex" mr={1}>
@@ -59,10 +63,11 @@ export default function WeddingDate({ dayOfWeek }: Props) {
             <Icon icon={faCalendarDays} />
           </MenuButton>
           <MenuList fontFamily="body">
-            <MenuItem icon={<Icon icon={faGoogle} />}>
-              <a href={google.render()} target="_blank">
-                Add to Google Calendar
-              </a>
+            <MenuItem
+              icon={<Icon icon={faGoogle} />}
+              onClick={() => openInBlank(google.render())}
+            >
+              Add to Google Calendar
             </MenuItem>
             <MenuItem
               icon={<Icon icon={faApple} />}
@@ -70,10 +75,11 @@ export default function WeddingDate({ dayOfWeek }: Props) {
             >
               Add to Apple Calendar
             </MenuItem>
-            <MenuItem icon={<Icon icon={faMicrosoft} />}>
-              <a href={outlook.render()} target="_blank">
-                Add to Outlook
-              </a>
+            <MenuItem
+              icon={<Icon icon={faMicrosoft} />}
+              onClick={() => openInBlank(outlook.render())}
+            >
+              Add to Outlook
             </MenuItem>
           </MenuList>
         </Menu>
