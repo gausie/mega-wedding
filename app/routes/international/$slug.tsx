@@ -42,58 +42,45 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: mapBoxStyles },
 ];
 
+type Party = definitions["parties_with_names"];
 type Guest = definitions["guests"];
 
 const fullname = (i?: Guest) =>
   i ? `${i.firstname} ${i.lastname}` : "Unknown";
 
-async function getInvitees(pin?: string) {
-  let primary = null;
-
+async function getParty(pin?: string) {
   if (pin) {
     const { data } = await supabase
-      .from<Guest & { guests: Guest[] }>("guests")
+      .from<Party & { guests: Guest[] }>("parties_with_names")
       .select(`*, guests(*)`)
       .is("international", true)
-      .is("represented_by", null)
       .eq("pin", pin.toLowerCase())
       .limit(1)
       .single();
 
-    primary = data;
+    return data;
   }
 
-  if (primary === null) return [];
-
-  const secondaries = primary.guests;
-
-  return [{ ...primary, guests: undefined }, ...secondaries];
+  return null;
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const invitees = await getInvitees(params.slug);
+  const party = await getParty(params.slug);
 
-  if (invitees.length === 0) return redirect("/international");
+  if (party === null) return redirect("/international");
 
-  const primary = invitees[0];
-
-  if (primary.last_visited_at === null) {
+  if (party.visited_at === null) {
     sendTelegramMessage(
-      `${fullname(
-        primary
-      )} visited the International RSVP page for the first time`
+      `${party.generated_name!} visited the International RSVP page for the first time`
     );
   }
 
   await supabase
-    .from("guests")
-    .update({ last_visited_at: new Date().toISOString() })
-    .in(
-      "id",
-      invitees.map((i) => i.id)
-    );
+    .from("parties")
+    .update({ visited_at: new Date().toISOString() })
+    .eq("id", party.id);
 
-  return json(invitees);
+  return json(party);
 };
 
 export const action: ActionFunction = async ({ params, request }) => {
@@ -103,13 +90,12 @@ export const action: ActionFunction = async ({ params, request }) => {
   // responses from guests. Furthermore, validate that this invite code has the permission to
   // respond for those invitees.
 
-  const [primary, inviteesMap] = await (async () => {
-    const invitees = await getInvitees(params.slug);
-    return [invitees[0], new Map(invitees.map((i) => [i.id || 0, i]))];
-  })();
+  const party = await getParty(params.slug);
 
   // This should never happen, should probably log this
-  if (inviteesMap.size === 0) return redirect("/");
+  if (party === null) return redirect("/");
+
+  const inviteesMap = new Map(party.guests.map((i) => [i.id || 0, i]));
 
   // This doesn't respect the beauty of FormData but nor do I. In case there are dupes
   // this will just use the last value we have
@@ -133,7 +119,7 @@ export const action: ActionFunction = async ({ params, request }) => {
   );
 
   if (naughty) {
-    sendTelegramMessage(`${fullname(primary)} attempted to fuck with the form`);
+    sendTelegramMessage(`${party.generated_name!} attempted to fuck with the form`);
     return { success: false, reason: "Don't fuck with my form" };
   }
 
@@ -173,7 +159,7 @@ type ActionData = { success: true } | { success: false; reason: string };
 
 export default function InternationalSlug() {
   const transition = useTransition();
-  const invitees = useLoaderData() as Guest[];
+  const party = useLoaderData() as Party & { guests: Guest[] };
   const actionData = useActionData() as ActionData | undefined;
 
   const [buttonText, buttonColourScheme] = (() => {
@@ -231,7 +217,7 @@ export default function InternationalSlug() {
                 <Stack alignItems="center" spacing={8}>
                   <CheckboxGroup>
                     <Stack>
-                      {invitees.map((i) => (
+                      {party.guests.map((i) => (
                         <RSVP key={i.id} invitee={i} />
                       ))}
                     </Stack>

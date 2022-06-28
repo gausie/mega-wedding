@@ -12,6 +12,111 @@ export interface paths {
       };
     };
   };
+  "/parties_with_names": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.parties_with_names.id"];
+          name?: parameters["rowFilter.parties_with_names.name"];
+          pin?: parameters["rowFilter.parties_with_names.pin"];
+          visited_at?: parameters["rowFilter.parties_with_names.visited_at"];
+          created_at?: parameters["rowFilter.parties_with_names.created_at"];
+          international?: parameters["rowFilter.parties_with_names.international"];
+          generated_name?: parameters["rowFilter.parties_with_names.generated_name"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["parties_with_names"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** parties_with_names */
+          parties_with_names?: definitions["parties_with_names"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.parties_with_names.id"];
+          name?: parameters["rowFilter.parties_with_names.name"];
+          pin?: parameters["rowFilter.parties_with_names.pin"];
+          visited_at?: parameters["rowFilter.parties_with_names.visited_at"];
+          created_at?: parameters["rowFilter.parties_with_names.created_at"];
+          international?: parameters["rowFilter.parties_with_names.international"];
+          generated_name?: parameters["rowFilter.parties_with_names.generated_name"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.parties_with_names.id"];
+          name?: parameters["rowFilter.parties_with_names.name"];
+          pin?: parameters["rowFilter.parties_with_names.pin"];
+          visited_at?: parameters["rowFilter.parties_with_names.visited_at"];
+          created_at?: parameters["rowFilter.parties_with_names.created_at"];
+          international?: parameters["rowFilter.parties_with_names.international"];
+          generated_name?: parameters["rowFilter.parties_with_names.generated_name"];
+        };
+        body: {
+          /** parties_with_names */
+          parties_with_names?: definitions["parties_with_names"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
   "/guests": {
     get: {
       parameters: {
@@ -27,6 +132,8 @@ export interface paths {
           responded_at?: parameters["rowFilter.guests.responded_at"];
           pin?: parameters["rowFilter.guests.pin"];
           international?: parameters["rowFilter.guests.international"];
+          party_name?: parameters["rowFilter.guests.party_name"];
+          member_of?: parameters["rowFilter.guests.member_of"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -88,6 +195,8 @@ export interface paths {
           responded_at?: parameters["rowFilter.guests.responded_at"];
           pin?: parameters["rowFilter.guests.pin"];
           international?: parameters["rowFilter.guests.international"];
+          party_name?: parameters["rowFilter.guests.party_name"];
+          member_of?: parameters["rowFilter.guests.member_of"];
         };
         header: {
           /** Preference */
@@ -113,6 +222,8 @@ export interface paths {
           responded_at?: parameters["rowFilter.guests.responded_at"];
           pin?: parameters["rowFilter.guests.pin"];
           international?: parameters["rowFilter.guests.international"];
+          party_name?: parameters["rowFilter.guests.party_name"];
+          member_of?: parameters["rowFilter.guests.member_of"];
         };
         body: {
           /** guests */
@@ -129,9 +240,131 @@ export interface paths {
       };
     };
   };
+  "/parties": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.parties.id"];
+          name?: parameters["rowFilter.parties.name"];
+          pin?: parameters["rowFilter.parties.pin"];
+          visited_at?: parameters["rowFilter.parties.visited_at"];
+          created_at?: parameters["rowFilter.parties.created_at"];
+          international?: parameters["rowFilter.parties.international"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["parties"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** parties */
+          parties?: definitions["parties"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.parties.id"];
+          name?: parameters["rowFilter.parties.name"];
+          pin?: parameters["rowFilter.parties.pin"];
+          visited_at?: parameters["rowFilter.parties.visited_at"];
+          created_at?: parameters["rowFilter.parties.created_at"];
+          international?: parameters["rowFilter.parties.international"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.parties.id"];
+          name?: parameters["rowFilter.parties.name"];
+          pin?: parameters["rowFilter.parties.pin"];
+          visited_at?: parameters["rowFilter.parties.visited_at"];
+          created_at?: parameters["rowFilter.parties.created_at"];
+          international?: parameters["rowFilter.parties.international"];
+        };
+        body: {
+          /** parties */
+          parties?: definitions["parties"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
 }
 
 export interface definitions {
+  parties_with_names: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id?: number;
+    /** Format: text */
+    name?: string;
+    /** Format: text */
+    pin?: string;
+    /** Format: timestamp with time zone */
+    visited_at?: string;
+    /** Format: timestamp with time zone */
+    created_at?: string;
+    /** Format: boolean */
+    international?: boolean;
+    /** Format: text */
+    generated_name?: string;
+  };
   guests: {
     /**
      * Format: bigint
@@ -169,6 +402,42 @@ export interface definitions {
     pin: string;
     /** Format: boolean */
     international: boolean;
+    /** Format: text */
+    party_name?: string;
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Foreign Key to `parties.id`.<fk table='parties' column='id'/>
+     */
+    member_of?: number;
+  };
+  /** @description Parties of guests */
+  parties: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: text */
+    name?: string;
+    /**
+     * Format: text
+     * @default substr((uuid_generate_v4())::text, 0, 7)
+     */
+    pin: string;
+    /** Format: timestamp with time zone */
+    visited_at?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
+    /**
+     * Format: boolean
+     * @default false
+     */
+    international: boolean;
   };
 }
 
@@ -205,6 +474,22 @@ export interface parameters {
   offset: string;
   /** @description Limiting and Pagination */
   limit: string;
+  /** @description parties_with_names */
+  "body.parties_with_names": definitions["parties_with_names"];
+  /** Format: bigint */
+  "rowFilter.parties_with_names.id": string;
+  /** Format: text */
+  "rowFilter.parties_with_names.name": string;
+  /** Format: text */
+  "rowFilter.parties_with_names.pin": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.parties_with_names.visited_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.parties_with_names.created_at": string;
+  /** Format: boolean */
+  "rowFilter.parties_with_names.international": string;
+  /** Format: text */
+  "rowFilter.parties_with_names.generated_name": string;
   /** @description guests */
   "body.guests": definitions["guests"];
   /** Format: bigint */
@@ -229,6 +514,24 @@ export interface parameters {
   "rowFilter.guests.pin": string;
   /** Format: boolean */
   "rowFilter.guests.international": string;
+  /** Format: text */
+  "rowFilter.guests.party_name": string;
+  /** Format: bigint */
+  "rowFilter.guests.member_of": string;
+  /** @description parties */
+  "body.parties": definitions["parties"];
+  /** Format: bigint */
+  "rowFilter.parties.id": string;
+  /** Format: text */
+  "rowFilter.parties.name": string;
+  /** Format: text */
+  "rowFilter.parties.pin": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.parties.visited_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.parties.created_at": string;
+  /** Format: boolean */
+  "rowFilter.parties.international": string;
 }
 
 export interface operations {}
