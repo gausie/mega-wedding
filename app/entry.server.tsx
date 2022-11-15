@@ -4,9 +4,12 @@ import createEmotionServer from "@emotion/server/create-instance";
 import { RemixServer } from "@remix-run/react";
 import type { EntryContext } from "@remix-run/node"; // Depends on the runtime you choose
 import "dotenv/config";
+import createCache from "@emotion/cache";
 
-import { ServerStyleContext } from "./context";
-import createEmotionCache from "./createEmotionCache";
+const key = "css";
+const cache = createCache({ key });
+const { extractCriticalToChunks, constructStyleTagsFromChunks } =
+  createEmotionServer(cache);
 
 export default function handleRequest(
   request: Request,
@@ -14,26 +17,16 @@ export default function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  const cache = createEmotionCache();
-  const { extractCriticalToChunks } = createEmotionServer(cache);
-
-  const html = renderToString(
-    <ServerStyleContext.Provider value={null}>
-      <CacheProvider value={cache}>
-        <RemixServer context={remixContext} url={request.url} />
-      </CacheProvider>
-    </ServerStyleContext.Provider>
+  let markup = renderToString(
+    <CacheProvider value={cache}>
+      <RemixServer context={remixContext} url={request.url} />
+    </CacheProvider>
   );
 
-  const chunks = extractCriticalToChunks(html);
+  const chunks = extractCriticalToChunks(markup);
+  const styles = constructStyleTagsFromChunks(chunks);
 
-  const markup = renderToString(
-    <ServerStyleContext.Provider value={chunks.styles}>
-      <CacheProvider value={cache}>
-        <RemixServer context={remixContext} url={request.url} />
-      </CacheProvider>
-    </ServerStyleContext.Provider>
-  );
+  markup = markup.replace("__STYLES__", styles);
 
   responseHeaders.set("Content-Type", "text/html");
 

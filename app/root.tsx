@@ -1,5 +1,3 @@
-import React, { useContext, useEffect } from "react";
-import { withEmotionCache } from "@emotion/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import {
@@ -14,7 +12,6 @@ import {
 import fontAwesomeStyles from "@fortawesome/fontawesome-svg-core/styles.css";
 import { config as fontAwesomeConfig } from "@fortawesome/fontawesome-svg-core";
 import theme from "./theme";
-import { ClientStyleContext, ServerStyleContext } from "./context";
 import NotFound from "./components/NotFound";
 
 // Configure FontAwesome to work in an SRR environment
@@ -55,53 +52,22 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: fontAwesomeStyles },
 ];
 
-interface DocumentProps {
-  children: React.ReactNode;
-}
-
-const Document = withEmotionCache(
-  ({ children }: DocumentProps, emotionCache) => {
-    const serverStyleData = useContext(ServerStyleContext);
-    const clientStyleData = useContext(ClientStyleContext);
-
-    // Only executed on client
-    useEffect(() => {
-      // re-link sheet container
-      emotionCache.sheet.container = document.head;
-      // re-inject tags
-      const tags = emotionCache.sheet.tags;
-      emotionCache.sheet.flush();
-      tags.forEach((tag) => {
-        (emotionCache.sheet as any)._insertTag(tag);
-      });
-      // reset cache to reapply global styles
-      clientStyleData?.reset();
-    }, [clientStyleData, emotionCache.sheet]);
-
-    return (
-      <html lang="en">
-        <head>
-          <Meta />
-          <meta name="msapplication-TileColor" content="#da532c" />
-          <meta name="theme-color" content="#ffffff" />
-          <Links />
-          {serverStyleData?.map(({ key, ids, css }) => (
-            <style
-              key={key}
-              data-emotion={`${key} ${ids.join(" ")}`}
-              dangerouslySetInnerHTML={{ __html: css }}
-            />
-          ))}
-        </head>
-        <body>
-          {children}
-          <ScrollRestoration />
-          <Scripts />
-          <LiveReload />
-        </body>
-      </html>
-    );
-  }
+const Document = ({ children }: React.PropsWithChildren) => (
+  <html lang="en">
+    <head>
+      <Meta />
+      <meta name="msapplication-TileColor" content="#da532c" />
+      <meta name="theme-color" content="#ffffff" />
+      <Links />
+      {typeof document === "undefined" ? "__STYLES__" : null}
+    </head>
+    <body>
+      {children}
+      <ScrollRestoration />
+      <Scripts />
+      <LiveReload />
+    </body>
+  </html>
 );
 
 export default function App() {
