@@ -8,6 +8,7 @@
     "build": "remix build",
     "dev": "remix dev",
     "lint": "eslint .",
+    "format": "prettier --write -- 'app/**/*.{ts,tsx}'",
     "start": "remix-serve build",
     "generate-types": "export $(cat .env) && openapi-typescript \"${SUPABASE_URL}/rest/v1/?apikey=${SUPABASE_ANON_KEY}\" --version=2 --output app/types/database.ts",
     "dump-schema": "export $(cat .env) && export PGPASSWORD=$DATABASE_PASSWORD && pg_dump --schema=public --quote-all-identifiers --schema-only -h $DATABASE_HOST -U postgres > supabase.sql"
@@ -41,6 +42,7 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "openapi-typescript": "^5.4.0",
     "prettier": "^2.6.2",

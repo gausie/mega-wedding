@@ -33,6 +33,7 @@ import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
 import WeddingDate from "~/components/WeddingDate";
 import WeddingMap from "~/components/WeddingMap";
+import { fullname } from "~/utils";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
@@ -44,9 +45,6 @@ export const links: LinksFunction = () => [
 
 type Party = definitions["parties_with_names"];
 type Guest = definitions["guests"];
-
-const fullname = (i?: Guest) =>
-  i ? `${i.firstname} ${i.lastname}` : "Unknown";
 
 async function getParty(pin?: string) {
   if (pin) {
