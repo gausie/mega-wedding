@@ -234,7 +234,6 @@ export interface paths {
           lastname?: parameters["rowFilter.std_form.lastname"];
           email?: parameters["rowFilter.std_form.email"];
           created_at?: parameters["rowFilter.std_form.created_at"];
-          responded_at?: parameters["rowFilter.std_form.responded_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -290,7 +289,6 @@ export interface paths {
           lastname?: parameters["rowFilter.std_form.lastname"];
           email?: parameters["rowFilter.std_form.email"];
           created_at?: parameters["rowFilter.std_form.created_at"];
-          responded_at?: parameters["rowFilter.std_form.responded_at"];
         };
         header: {
           /** Preference */
@@ -310,7 +308,6 @@ export interface paths {
           lastname?: parameters["rowFilter.std_form.lastname"];
           email?: parameters["rowFilter.std_form.email"];
           created_at?: parameters["rowFilter.std_form.created_at"];
-          responded_at?: parameters["rowFilter.std_form.responded_at"];
         };
         body: {
           /** std_form */
@@ -503,8 +500,6 @@ export interface definitions {
      * @default now()
      */
     created_at?: string;
-    /** Format: timestamp with time zone */
-    responded_at?: string;
   };
   /** @description Parties of guests */
   parties: {
@@ -615,8 +610,6 @@ export interface parameters {
   "rowFilter.std_form.email": string;
   /** Format: timestamp with time zone */
   "rowFilter.std_form.created_at": string;
-  /** Format: timestamp with time zone */
-  "rowFilter.std_form.responded_at": string;
   /** @description parties */
   "body.parties": definitions["parties"];
   /** Format: bigint */

@@ -136,8 +136,7 @@ CREATE TABLE "public"."std_form" (
     "firstname" "text" NOT NULL,
     "lastname" "text" NOT NULL,
     "email" "text" DEFAULT ''::"text",
-    "created_at" timestamp with time zone DEFAULT "now"(),
-    "responded_at" timestamp with time zone
+    "created_at" timestamp with time zone DEFAULT "now"()
 );
 
 
