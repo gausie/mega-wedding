@@ -4,7 +4,6 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  Link,
   Heading,
   Button,
 } from "@chakra-ui/react";

@@ -21,7 +21,7 @@ export default function International() {
       e.preventDefault();
       navigate(pin);
     },
-    [pin]
+    [pin, navigate]
   );
 
   return (

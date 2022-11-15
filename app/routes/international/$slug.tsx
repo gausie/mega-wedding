@@ -1,10 +1,10 @@
-import {
+import type {
   ActionFunction,
   LinksFunction,
   LoaderFunction,
   MetaFunction,
-  redirect,
 } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Form,
@@ -117,7 +117,9 @@ export const action: ActionFunction = async ({ params, request }) => {
   );
 
   if (naughty) {
-    sendTelegramMessage(`${party.generated_name!} attempted to fuck with the form`);
+    sendTelegramMessage(
+      `${party.generated_name!} attempted to fuck with the form`
+    );
     return { success: false, reason: "Don't fuck with my form" };
   }
 
