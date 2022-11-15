@@ -1,6 +1,6 @@
 import { Checkbox } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import { definitions } from "~/types/database";
+import type { definitions } from "~/types/database";
 
 type Guest = definitions["guests"];
 

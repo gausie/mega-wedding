@@ -1,10 +1,6 @@
 import { HStack, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import {
-  CalendarOptions,
-  GoogleCalendar,
-  ICalendar,
-  OutlookCalendar,
-} from "datebook";
+import type { CalendarOptions } from "datebook";
+import { GoogleCalendar, ICalendar, OutlookCalendar } from "datebook";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +9,7 @@ import {
   faApple,
   faMicrosoft,
 } from "@fortawesome/free-brands-svg-icons";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { ClassNames } from "@emotion/react";
 
 const event: CalendarOptions = {

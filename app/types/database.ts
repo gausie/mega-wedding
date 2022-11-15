@@ -125,14 +125,9 @@ export interface paths {
           firstname?: parameters["rowFilter.guests.firstname"];
           email?: parameters["rowFilter.guests.email"];
           created_at?: parameters["rowFilter.guests.created_at"];
-          represented_by?: parameters["rowFilter.guests.represented_by"];
           attending?: parameters["rowFilter.guests.attending"];
           lastname?: parameters["rowFilter.guests.lastname"];
-          last_visited_at?: parameters["rowFilter.guests.last_visited_at"];
           responded_at?: parameters["rowFilter.guests.responded_at"];
-          pin?: parameters["rowFilter.guests.pin"];
-          international?: parameters["rowFilter.guests.international"];
-          party_name?: parameters["rowFilter.guests.party_name"];
           member_of?: parameters["rowFilter.guests.member_of"];
           /** Filtering Columns */
           select?: parameters["select"];
@@ -188,14 +183,9 @@ export interface paths {
           firstname?: parameters["rowFilter.guests.firstname"];
           email?: parameters["rowFilter.guests.email"];
           created_at?: parameters["rowFilter.guests.created_at"];
-          represented_by?: parameters["rowFilter.guests.represented_by"];
           attending?: parameters["rowFilter.guests.attending"];
           lastname?: parameters["rowFilter.guests.lastname"];
-          last_visited_at?: parameters["rowFilter.guests.last_visited_at"];
           responded_at?: parameters["rowFilter.guests.responded_at"];
-          pin?: parameters["rowFilter.guests.pin"];
-          international?: parameters["rowFilter.guests.international"];
-          party_name?: parameters["rowFilter.guests.party_name"];
           member_of?: parameters["rowFilter.guests.member_of"];
         };
         header: {
@@ -215,19 +205,113 @@ export interface paths {
           firstname?: parameters["rowFilter.guests.firstname"];
           email?: parameters["rowFilter.guests.email"];
           created_at?: parameters["rowFilter.guests.created_at"];
-          represented_by?: parameters["rowFilter.guests.represented_by"];
           attending?: parameters["rowFilter.guests.attending"];
           lastname?: parameters["rowFilter.guests.lastname"];
-          last_visited_at?: parameters["rowFilter.guests.last_visited_at"];
           responded_at?: parameters["rowFilter.guests.responded_at"];
-          pin?: parameters["rowFilter.guests.pin"];
-          international?: parameters["rowFilter.guests.international"];
-          party_name?: parameters["rowFilter.guests.party_name"];
           member_of?: parameters["rowFilter.guests.member_of"];
         };
         body: {
           /** guests */
           guests?: definitions["guests"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+  };
+  "/std_form": {
+    get: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.std_form.id"];
+          firstname?: parameters["rowFilter.std_form.firstname"];
+          lastname?: parameters["rowFilter.std_form.lastname"];
+          email?: parameters["rowFilter.std_form.email"];
+          created_at?: parameters["rowFilter.std_form.created_at"];
+          /** Filtering Columns */
+          select?: parameters["select"];
+          /** Ordering */
+          order?: parameters["order"];
+          /** Limiting and Pagination */
+          offset?: parameters["offset"];
+          /** Limiting and Pagination */
+          limit?: parameters["limit"];
+        };
+        header: {
+          /** Limiting and Pagination */
+          Range?: parameters["range"];
+          /** Limiting and Pagination */
+          "Range-Unit"?: parameters["rangeUnit"];
+          /** Preference */
+          Prefer?: parameters["preferCount"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: {
+          schema: definitions["std_form"][];
+        };
+        /** Partial Content */
+        206: unknown;
+      };
+    };
+    post: {
+      parameters: {
+        body: {
+          /** std_form */
+          std_form?: definitions["std_form"];
+        };
+        query: {
+          /** Filtering Columns */
+          select?: parameters["select"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** Created */
+        201: unknown;
+      };
+    };
+    delete: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.std_form.id"];
+          firstname?: parameters["rowFilter.std_form.firstname"];
+          lastname?: parameters["rowFilter.std_form.lastname"];
+          email?: parameters["rowFilter.std_form.email"];
+          created_at?: parameters["rowFilter.std_form.created_at"];
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferReturn"];
+        };
+      };
+      responses: {
+        /** No Content */
+        204: never;
+      };
+    };
+    patch: {
+      parameters: {
+        query: {
+          id?: parameters["rowFilter.std_form.id"];
+          firstname?: parameters["rowFilter.std_form.firstname"];
+          lastname?: parameters["rowFilter.std_form.lastname"];
+          email?: parameters["rowFilter.std_form.email"];
+          created_at?: parameters["rowFilter.std_form.created_at"];
+        };
+        body: {
+          /** std_form */
+          std_form?: definitions["std_form"];
         };
         header: {
           /** Preference */
@@ -381,35 +465,41 @@ export interface definitions {
      * @default now()
      */
     created_at?: string;
-    /**
-     * Format: bigint
-     * @description Note:
-     * This is a Foreign Key to `guests.id`.<fk table='guests' column='id'/>
-     */
-    represented_by?: number;
     /** Format: boolean */
     attending?: boolean;
     /** Format: text */
     lastname: string;
     /** Format: timestamp with time zone */
-    last_visited_at?: string;
-    /** Format: timestamp with time zone */
     responded_at?: string;
-    /**
-     * Format: text
-     * @default substr((extensions.uuid_generate_v4())::text, 0, 7)
-     */
-    pin: string;
-    /** Format: boolean */
-    international: boolean;
-    /** Format: text */
-    party_name?: string;
     /**
      * Format: bigint
      * @description Note:
      * This is a Foreign Key to `parties.id`.<fk table='parties' column='id'/>
      */
     member_of?: number;
+  };
+  /** @description Temporary table for collecting email addresses for STDs */
+  std_form: {
+    /**
+     * Format: bigint
+     * @description Note:
+     * This is a Primary Key.<pk/>
+     */
+    id: number;
+    /** Format: text */
+    firstname: string;
+    /** Format: text */
+    lastname: string;
+    /**
+     * Format: text
+     * @default
+     */
+    email?: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at?: string;
   };
   /** @description Parties of guests */
   parties: {
@@ -500,24 +590,26 @@ export interface parameters {
   "rowFilter.guests.email": string;
   /** Format: timestamp with time zone */
   "rowFilter.guests.created_at": string;
-  /** Format: bigint */
-  "rowFilter.guests.represented_by": string;
   /** Format: boolean */
   "rowFilter.guests.attending": string;
   /** Format: text */
   "rowFilter.guests.lastname": string;
   /** Format: timestamp with time zone */
-  "rowFilter.guests.last_visited_at": string;
-  /** Format: timestamp with time zone */
   "rowFilter.guests.responded_at": string;
-  /** Format: text */
-  "rowFilter.guests.pin": string;
-  /** Format: boolean */
-  "rowFilter.guests.international": string;
-  /** Format: text */
-  "rowFilter.guests.party_name": string;
   /** Format: bigint */
   "rowFilter.guests.member_of": string;
+  /** @description std_form */
+  "body.std_form": definitions["std_form"];
+  /** Format: bigint */
+  "rowFilter.std_form.id": string;
+  /** Format: text */
+  "rowFilter.std_form.firstname": string;
+  /** Format: text */
+  "rowFilter.std_form.lastname": string;
+  /** Format: text */
+  "rowFilter.std_form.email": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.std_form.created_at": string;
   /** @description parties */
   "body.parties": definitions["parties"];
   /** Format: bigint */

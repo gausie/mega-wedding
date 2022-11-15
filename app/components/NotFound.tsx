@@ -14,7 +14,11 @@ export default function NotFound() {
         <Text fontSize="2xl">Page Not Found</Text>
       </Box>
       <Box borderStyle="solid" borderColor="highlight" borderWidth="20px">
-        <a href="https://www.youtube.com/watch?v=CwPWmEzoVbw" target="_blank">
+        <a
+          href="https://www.youtube.com/watch?v=CwPWmEzoVbw"
+          target="_blank"
+          rel="noreferrer"
+        >
           <Image
             borderStyle="solid"
             borderColor="primary"

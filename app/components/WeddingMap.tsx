@@ -1,5 +1,6 @@
 import { Text } from "@chakra-ui/react";
-import Map, { Layer, LayerProps, Marker, Source } from "react-map-gl";
+import type { LayerProps } from "react-map-gl";
+import Map, { Layer, Marker, Source } from "react-map-gl";
 
 const geojson = {
   type: "Feature",

@@ -1,10 +1,10 @@
-import {
+import type {
   ActionFunction,
   LinksFunction,
   LoaderFunction,
   MetaFunction,
-  redirect,
 } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Form,
@@ -33,6 +33,7 @@ import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
 import WeddingDate from "~/components/WeddingDate";
 import WeddingMap from "~/components/WeddingMap";
+import { fullname } from "~/utils";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
@@ -44,9 +45,6 @@ export const links: LinksFunction = () => [
 
 type Party = definitions["parties_with_names"];
 type Guest = definitions["guests"];
-
-const fullname = (i?: Guest) =>
-  i ? `${i.firstname} ${i.lastname}` : "Unknown";
 
 async function getParty(pin?: string) {
   if (pin) {
@@ -119,7 +117,9 @@ export const action: ActionFunction = async ({ params, request }) => {
   );
 
   if (naughty) {
-    sendTelegramMessage(`${party.generated_name!} attempted to fuck with the form`);
+    sendTelegramMessage(
+      `${party.generated_name!} attempted to fuck with the form`
+    );
     return { success: false, reason: "Don't fuck with my form" };
   }
 
