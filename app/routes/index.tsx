@@ -1,20 +1,11 @@
-import {
-  Container,
-  Flex,
-  SimpleGrid,
-  Stack,
-  Text,
-  Heading,
-  Button,
-} from "@chakra-ui/react";
-import { Link as RemixLink } from "@remix-run/react";
+import { Container, Flex, SimpleGrid, Stack, Heading } from "@chakra-ui/react";
 
 import Splash from "~/components/Splash";
 import WeddingDate from "~/components/WeddingDate";
 
 export default function Index() {
   return (
-    <Stack mb={16} spacing={4}>
+    <Stack spacing={4}>
       <Flex flexDirection="column" height="100vh">
         <Splash />
         {/* Bottom info container - this holds a banner of info at the bottom of the welcome container */}
@@ -27,16 +18,6 @@ export default function Index() {
           </SimpleGrid>
         </Container>
       </Flex>
-      <Text textAlign="center" fontSize="xl">
-        <Button
-          variant="light"
-          colorScheme="primary"
-          as={RemixLink}
-          to="/international"
-        >
-          International Guest Response Form
-        </Button>
-      </Text>
     </Stack>
   );
 }
