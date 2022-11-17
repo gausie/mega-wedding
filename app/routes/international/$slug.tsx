@@ -37,6 +37,7 @@ import { fullname } from "~/utils";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
+  title: "Hailey and Sam's Wedding | International RSVP",
 });
 
 export const links: LinksFunction = () => [

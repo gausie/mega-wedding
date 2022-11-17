@@ -1,5 +1,5 @@
 import { Form, useActionData, useTransition } from "@remix-run/react";
-import type { ActionFunction } from "@remix-run/node";
+import type { ActionFunction, MetaFunction } from "@remix-run/node";
 import { Stack, Text, Button, Input } from "@chakra-ui/react";
 
 import Header from "~/components/Header";
@@ -8,6 +8,13 @@ import { supabase } from "~/lib/supabase.server";
 import { sendTelegramMessage } from "~/lib/telegram.server";
 import { fullname } from "~/utils";
 import { useEffect, useRef, useState } from "react";
+
+export const meta: MetaFunction = () => {
+  return {
+    robots: "noindex",
+    title: "Hailey and Sam's Wedding | Details for Save the Date",
+  };
+};
 
 type StdFormEntry = definitions["std_form"];
 

@@ -1,3 +1,4 @@
+import type { MetaFunction } from "@remix-run/node";
 import { useNavigate, useTransition } from "@remix-run/react";
 import {
   Stack,
@@ -10,6 +11,12 @@ import {
 import React, { useCallback, useState } from "react";
 
 import Header from "~/components/Header";
+
+export const meta: MetaFunction = () => {
+  return {
+    title: "Hailey and Sam's Wedding | International RSVP",
+  };
+};
 
 export default function International() {
   const navigate = useNavigate();
