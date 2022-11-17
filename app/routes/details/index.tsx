@@ -1,6 +1,13 @@
 import { Form, useActionData, useTransition } from "@remix-run/react";
 import type { ActionFunction, MetaFunction } from "@remix-run/node";
-import { Stack, Text, Button, Input } from "@chakra-ui/react";
+import {
+  Stack,
+  Text,
+  Button,
+  Input,
+  Heading,
+  Container,
+} from "@chakra-ui/react";
 
 import Header from "~/components/Header";
 import type { definitions } from "~/types/database";
@@ -83,51 +90,57 @@ export default function Details() {
   })();
 
   return (
-    <Stack minHeight="100%" spacing={0}>
+    <>
       <Header />
 
-      <Stack
-        flexGrow={1}
-        spacing={8}
-        alignItems="center"
-        justifyContent="center"
-        height="100%"
-      >
-        <Text as="div">
-          Please give us your first and last name as well as an up-to-date email
-          address so we can send you our Save the Date.
-        </Text>
+      <Container maxW="6xl" mb={16}>
+        <Stack
+          flexGrow={1}
+          spacing={8}
+          alignItems="center"
+          justifyContent="center"
+          height="100%"
+          textAlign="center"
+        >
+          <Heading>Details</Heading>
 
-        <Form method="post" ref={formRef}>
-          <Stack as="fieldset" spacing={4}>
-            {!actionData?.success && (
-              <>
-                <Input name="firstname" placeholder="First name" required />
-                <Input name="lastname" placeholder="Last name" required />
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email address"
-                  required
-                />
-              </>
-            )}
-            <Button
-              type="submit"
-              isDisabled={!valid}
-              isLoading={["loading", "submitting"].includes(transition.state)}
-              colorScheme={buttonColourScheme}
-              title={
-                valid
-                  ? undefined
-                  : "The form is invalid and cannot be submitted"
-              }
-            >
-              {buttonText}
-            </Button>
-          </Stack>
-        </Form>
-      </Stack>
-    </Stack>
+          <Text as="div" fontSize="lg">
+            Please give us an up-to-date email address along with your first
+            last name so that we can send you a <i>Save the Date</i> for our
+            wedding.
+          </Text>
+
+          <Form method="post" ref={formRef}>
+            <Stack as="fieldset" spacing={4}>
+              {!actionData?.success && (
+                <>
+                  <Input name="firstname" placeholder="First name" required />
+                  <Input name="lastname" placeholder="Last name" required />
+                  <Input
+                    type="email"
+                    name="email"
+                    placeholder="Email address"
+                    required
+                  />
+                </>
+              )}
+              <Button
+                type="submit"
+                isDisabled={!valid}
+                isLoading={["loading", "submitting"].includes(transition.state)}
+                colorScheme={buttonColourScheme}
+                title={
+                  valid
+                    ? undefined
+                    : "The form is invalid and cannot be submitted"
+                }
+              >
+                {buttonText}
+              </Button>
+            </Stack>
+          </Form>
+        </Stack>
+      </Container>
+    </>
   );
 }
