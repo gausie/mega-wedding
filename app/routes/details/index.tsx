@@ -93,11 +93,11 @@ export default function Details() {
     <>
       <Header />
 
-      <Container maxW="6xl" mb={16}>
+      <Container maxW="xl" mb={16}>
         <Stack
           flexGrow={1}
           spacing={8}
-          alignItems="center"
+          alignItems="stretch"
           justifyContent="center"
           height="100%"
           textAlign="center"
