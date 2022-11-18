@@ -105,7 +105,7 @@ export default function Details() {
           <Heading>Details</Heading>
 
           <Text as="div" fontSize="lg">
-            Please give us an up-to-date email address along with your first
+            Please give us an up-to-date email address along with your first and
             last name so that we can send you a <i>Save the Date</i> for our
             wedding.
           </Text>
