@@ -16,6 +16,7 @@ export default function Header() {
       borderBottomStyle="solid"
       borderColor="highlight"
       borderBottomWidth={20}
+      cursor="pointer"
     >
       <BezrasHashem />
       <Logo height={100} />
