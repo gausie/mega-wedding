@@ -1,6 +1,19 @@
 import { Stack, Text, Image, Box } from "@chakra-ui/react";
 
+const jokes = [
+  {
+    image: "/possibli.gif",
+    explainer: "https://www.youtube.com/watch?v=CwPWmEzoVbw",
+  },
+  {
+    image: "/troubleinparadise.gif",
+    explainer: "https://y.yarn.co/db13532f-0a69-477a-8a78-ebafb5d177b2.mp4",
+  },
+] as const;
+
 export default function NotFound() {
+  const joke = jokes[Math.floor(Math.random() * jokes.length)];
+
   return (
     <Stack
       alignItems="center"
@@ -14,16 +27,12 @@ export default function NotFound() {
         <Text fontSize="2xl">Page Not Found</Text>
       </Box>
       <Box borderStyle="solid" borderColor="highlight" borderWidth="20px">
-        <a
-          href="https://www.youtube.com/watch?v=CwPWmEzoVbw"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href={joke.explainer} target="_blank" rel="noreferrer">
           <Image
             borderStyle="solid"
             borderColor="primary"
             borderWidth="20px"
-            src="/possibli.gif"
+            src={joke.image}
           />
         </a>
       </Box>
