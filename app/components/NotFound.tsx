@@ -3,14 +3,17 @@ import { Stack, Text, Image, Box } from "@chakra-ui/react";
 const jokes = [
   {
     image: "/possibli.gif",
+    alt: "Helicopter pilot: Hah! That's the first thing that's ever gone wrong",
     explainer: "https://www.youtube.com/watch?v=CwPWmEzoVbw",
   },
   {
-    image: "/troubleinparadise.gif",
+    image: "/likeanorange.gif",
+    alt: "Moe Szyslak: Trouble in paradise? Heh heh heh",
     explainer: "https://y.yarn.co/db13532f-0a69-477a-8a78-ebafb5d177b2.mp4",
   },
   {
-    image: "/whoops.gif",
+    image: "/nerdsconductelectricity.gif",
+    alt: "Bart Simpson: Whoops, my finger slipped!",
     explainer: "https://www.youtube.com/watch?v=3iiz5kiePuI",
   },
 ] as const;
@@ -37,6 +40,7 @@ export default function NotFound() {
             borderColor="primary"
             borderWidth="20px"
             src={joke.image}
+            alt={joke.alt}
           />
         </a>
       </Box>
