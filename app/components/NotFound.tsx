@@ -9,6 +9,10 @@ const jokes = [
     image: "/troubleinparadise.gif",
     explainer: "https://y.yarn.co/db13532f-0a69-477a-8a78-ebafb5d177b2.mp4",
   },
+  {
+    image: "/whoops.gif",
+    explainer: "https://www.youtube.com/watch?v=3iiz5kiePuI",
+  },
 ] as const;
 
 export default function NotFound() {
