@@ -1,7 +1,7 @@
 import type {
   ActionFunction,
   LinksFunction,
-  LoaderArgs,
+  LoaderFunction,
   MetaFunction,
 } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
@@ -21,6 +21,10 @@ import {
   Button,
   SimpleGrid,
   Link,
+  Card,
+  CardHeader,
+  CardBody,
+  Image,
 } from "@chakra-ui/react";
 
 import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
@@ -29,12 +33,14 @@ import { supabase } from "~/lib/supabase.server";
 import { sendTelegramMessage } from "~/lib/telegram.server";
 
 import type { definitions } from "~/types/database";
-import Alert from "~/components/Alert";
 import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
 import WeddingDate from "~/components/WeddingDate";
 import WeddingMap from "~/components/WeddingMap";
 import { fullname } from "~/utils";
+import { faMapPin } from "@fortawesome/free-solid-svg-icons";
+import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
@@ -64,9 +70,8 @@ async function getParty(pin?: string) {
   return null;
 }
 
-export const loader = async ({ params }: LoaderArgs) => {
-  const { slug } = params;
-  const party = await getParty(slug);
+export const loader: LoaderFunction = async ({ params }) => {
+  const party = await getParty(params.slug);
 
   if (party === null) return redirect("/international");
 
@@ -81,7 +86,7 @@ export const loader = async ({ params }: LoaderArgs) => {
     .update({ visited_at: new Date().toISOString() })
     .eq("id", party.id);
 
-  return json({ party, slug });
+  return json(party);
 };
 
 export const action: ActionFunction = async ({ params, request }) => {
@@ -130,21 +135,21 @@ export const action: ActionFunction = async ({ params, request }) => {
     supabase
       .from<Guest>("guests")
       .update({
-        considering: true,
+        attending: true,
         responded_at: new Date().toISOString(),
       })
       .in("id", yes),
     supabase
       .from<Guest>("guests")
       .update({
-        considering: false,
+        attending: false,
         responded_at: new Date().toISOString(),
       })
       .in("id", no),
   ]);
 
   sendTelegramMessage(
-    `New International RSVP:${
+    `New RSVP:${
       yes.length > 0
         ? `\n✔️: ${yes.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
         : ""
@@ -162,7 +167,7 @@ type ActionData = { success: true } | { success: false; reason: string };
 
 export default function InternationalSlug() {
   const transition = useTransition();
-  const { party, slug } = useLoaderData<typeof loader>();
+  const party = useLoaderData() as Party & { guests: Guest[] };
   const actionData = useActionData() as ActionData | undefined;
 
   const [buttonText, buttonColourScheme] = (() => {
@@ -177,47 +182,108 @@ export default function InternationalSlug() {
       <Header />
 
       <Container maxW="6xl" mb={16}>
-        <SimpleGrid columns={[1, 2]} spacing={[10, 8]}>
-          <Stack spacing={8} textAlign="center">
-            <Alert title="We're no longer accepting international responses">
-              {/* If you haven't already done so, please provide your full RSVP{" "}
-              <Link color="primary.700" href={`/invite/${slug}`}>
-                at the appropriate page
-              </Link>
-              , which contains more details.{" "}
-              <Link href={`/invite/${slug}`}>➺</Link> */}
-            </Alert>
-
+        <Stack spacing={8}>
+          <Stack
+            spacing={8}
+            textAlign="center"
+            alignItems="center"
+            maxWidth={800}
+            margin="0 auto"
+          >
             <Heading>Our Wedding</Heading>
 
             <Text as="div">
-              It would be a sincere pleasure to welcome you to Scotland on the
-              occasion of our wedding. On <WeddingDate dayOfWeek />, we will be
-              married in Haddington – 17 miles east of our home in central
-              Edinburgh.
+              It would be a sincere pleasure for you to join us on the occasion
+              of our wedding. On <WeddingDate dayOfWeek />, we will be married
+              in Colstoun House, Haddington &ndash; 17 miles east of our home in
+              central Edinburgh.
             </Text>
 
+            <Heading as="h3" size="lg">
+              Details
+            </Heading>
+
+            <SimpleGrid
+              width="100%"
+              spacing={4}
+              templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+            >
+              <Card>
+                <CardHeader>
+                  <Heading as="h3" size="md">
+                    Location
+                  </Heading>
+                </CardHeader>
+                <CardBody>
+                  <Stack spacing={2}>
+                    <Image src="/colstoun.webp" alt="The main house" />
+                    <Text>
+                      Colston House is a country home around 30 minutes' travel
+                      from the centre of Edinburgh.
+                    </Text>
+                    <Link
+                      color="primary.700"
+                      href="https://goo.gl/maps/ZhfL8jpvd8HAqaGB7"
+                    >
+                      <FontAwesomeIcon icon={faMapPin} /> Colstoun House,
+                      Haddington, EH41 4PA
+                    </Link>
+                  </Stack>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Heading as="h3" size="md">
+                    Dress Code
+                  </Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>The vibes are good</Text>
+                </CardBody>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <Heading as="h3" size="md">
+                    Carpooling
+                  </Heading>
+                </CardHeader>
+                <CardBody>
+                  <Stack spacing={2}>
+                    <Text>
+                      The venue is only a 30 minute journey from the centre of
+                      Edinburgh. If you have space in a car, are looking for
+                      space, or want to share a cab; we've set up a WhatsApp
+                      group for finding other guests.
+                    </Text>
+                    <Link
+                      color="primary.700"
+                      href="https://chat.whatsapp.com/JfIoHNRm7hM9MAObljVDml"
+                    >
+                      <FontAwesomeIcon icon={faWhatsapp} /> Join the group
+                    </Link>
+                  </Stack>
+                </CardBody>
+              </Card>
+            </SimpleGrid>
+
+            <Heading as="h3" size="lg">
+              RSVP
+            </Heading>
+
             <Text>
-              We would be honoured to reserve a space for you with an expression
-              of your intent to make the journey. We kindly ask for your
-              response by the{" "}
+              Please tick the box next to the name of any individual planning to
+              travel to attend. We kindly ask for your response by the{" "}
               <b>
                 <time dateTime="2022-08-31">
                   31<sup>st</sup> of August 2022
                 </time>
               </b>
-              .
+              . Responses can be amended here any time between now and the time
+              limit.
             </Text>
 
             <Text>
-              Please tick the box next to the name of any individual planning to
-              travel to Scotland for the wedding. Responses can be amended here
-              any time between now and the time limit.
-            </Text>
-
-            <Text>
-              Further details of the event will be made available in late
-              summer, but in the meantime please do not hesitate to{" "}
+              Please do not hesitate to{" "}
               <Link color="primary" href="mailto:hello@haileyandsam.co.uk">
                 reach out to us
               </Link>{" "}
@@ -230,12 +296,7 @@ export default function InternationalSlug() {
                   <CheckboxGroup>
                     <Stack>
                       {party.guests.map((i) => (
-                        <RSVP
-                          key={i.id}
-                          whichKey="considering"
-                          invitee={i}
-                          disabled
-                        />
+                        <RSVP key={i.id} whichKey="attending" invitee={i} />
                       ))}
                     </Stack>
                   </CheckboxGroup>
@@ -245,7 +306,6 @@ export default function InternationalSlug() {
                     isLoading={["loading", "submitting"].includes(
                       transition.state
                     )}
-                    disabled
                   >
                     {buttonText}
                   </Button>
@@ -253,8 +313,8 @@ export default function InternationalSlug() {
               </fieldset>
             </Form>
           </Stack>
-          <WeddingMap />
-        </SimpleGrid>
+          <WeddingMap minHeight={200} />
+        </Stack>
       </Container>
     </>
   );

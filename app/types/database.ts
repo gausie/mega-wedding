@@ -125,10 +125,11 @@ export interface paths {
           firstname?: parameters["rowFilter.guests.firstname"];
           email?: parameters["rowFilter.guests.email"];
           created_at?: parameters["rowFilter.guests.created_at"];
-          attending?: parameters["rowFilter.guests.attending"];
+          considering?: parameters["rowFilter.guests.considering"];
           lastname?: parameters["rowFilter.guests.lastname"];
           responded_at?: parameters["rowFilter.guests.responded_at"];
           member_of?: parameters["rowFilter.guests.member_of"];
+          attending?: parameters["rowFilter.guests.attending"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -183,10 +184,11 @@ export interface paths {
           firstname?: parameters["rowFilter.guests.firstname"];
           email?: parameters["rowFilter.guests.email"];
           created_at?: parameters["rowFilter.guests.created_at"];
-          attending?: parameters["rowFilter.guests.attending"];
+          considering?: parameters["rowFilter.guests.considering"];
           lastname?: parameters["rowFilter.guests.lastname"];
           responded_at?: parameters["rowFilter.guests.responded_at"];
           member_of?: parameters["rowFilter.guests.member_of"];
+          attending?: parameters["rowFilter.guests.attending"];
         };
         header: {
           /** Preference */
@@ -205,10 +207,11 @@ export interface paths {
           firstname?: parameters["rowFilter.guests.firstname"];
           email?: parameters["rowFilter.guests.email"];
           created_at?: parameters["rowFilter.guests.created_at"];
-          attending?: parameters["rowFilter.guests.attending"];
+          considering?: parameters["rowFilter.guests.considering"];
           lastname?: parameters["rowFilter.guests.lastname"];
           responded_at?: parameters["rowFilter.guests.responded_at"];
           member_of?: parameters["rowFilter.guests.member_of"];
+          attending?: parameters["rowFilter.guests.attending"];
         };
         body: {
           /** guests */
@@ -466,7 +469,7 @@ export interface definitions {
      */
     created_at?: string;
     /** Format: boolean */
-    attending?: boolean;
+    considering?: boolean;
     /** Format: text */
     lastname: string;
     /** Format: timestamp with time zone */
@@ -477,6 +480,11 @@ export interface definitions {
      * This is a Foreign Key to `parties.id`.<fk table='parties' column='id'/>
      */
     member_of?: number;
+    /**
+     * Format: boolean
+     * @default false
+     */
+    attending: boolean;
   };
   /** @description Temporary table for collecting email addresses for STDs */
   std_form: {
@@ -513,7 +521,7 @@ export interface definitions {
     name?: string;
     /**
      * Format: text
-     * @default substr((uuid_generate_v4())::text, 0, 7)
+     * @default substr((extensions.uuid_generate_v4())::text, 0, 7)
      */
     pin: string;
     /** Format: timestamp with time zone */
@@ -591,13 +599,15 @@ export interface parameters {
   /** Format: timestamp with time zone */
   "rowFilter.guests.created_at": string;
   /** Format: boolean */
-  "rowFilter.guests.attending": string;
+  "rowFilter.guests.considering": string;
   /** Format: text */
   "rowFilter.guests.lastname": string;
   /** Format: timestamp with time zone */
   "rowFilter.guests.responded_at": string;
   /** Format: bigint */
   "rowFilter.guests.member_of": string;
+  /** Format: boolean */
+  "rowFilter.guests.attending": string;
   /** @description std_form */
   "body.std_form": definitions["std_form"];
   /** Format: bigint */
