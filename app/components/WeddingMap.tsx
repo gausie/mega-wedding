@@ -98,10 +98,14 @@ const lineLayer: LayerProps = {
   },
 };
 
-export default function WeddingMap() {
+type Props = {
+  minHeight?: number;
+};
+
+export default function WeddingMap({ minHeight = 400 }: Props) {
   return (
     <Map
-      style={{ width: "100%", height: "100%", minHeight: "400px" }}
+      style={{ width: "100%", height: "100%", minHeight }}
       mapStyle="mapbox://styles/gausie/cl4adr758000z14odoh4bf1rd"
       initialViewState={{
         longitude: -3,

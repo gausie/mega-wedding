@@ -6,11 +6,14 @@ type Guest = definitions["guests"];
 
 type Props = {
   invitee: Guest;
+  whichKey: "considering" | "attending";
+  disabled?: boolean;
 };
 
-export default function RSVP({ invitee }: Props) {
-  const [value, setValue] = useState(invitee.attending);
-  useEffect(() => setValue(invitee.attending), [invitee.attending]);
+export default function RSVP({ invitee, whichKey, disabled = false }: Props) {
+  const propValue = invitee[whichKey];
+  const [value, setValue] = useState(propValue);
+  useEffect(() => setValue(propValue), [propValue]);
 
   const toggle = useCallback(() => setValue((v) => !v), []);
 
@@ -25,7 +28,12 @@ export default function RSVP({ invitee }: Props) {
         name={`rsvp.${invitee.id}`}
         value={value ? "true" : "false"}
       />
-      <Checkbox isChecked={value} onChange={toggle} title={title}>
+      <Checkbox
+        isChecked={value}
+        onChange={toggle}
+        title={title}
+        disabled={disabled}
+      >
         {invitee.firstname} {invitee.lastname}
       </Checkbox>
     </>
