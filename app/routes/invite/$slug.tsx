@@ -272,10 +272,10 @@ export default function InternationalSlug() {
 
             <Text>
               Please tick the box next to the name of any individual planning to
-              travel to attend. We kindly ask for your response by the{" "}
+              attend. We kindly ask for your response by the{" "}
               <b>
-                <time dateTime="2022-08-31">
-                  31<sup>st</sup> of August 2022
+                <time dateTime="2023-04-09">
+                  9<sup>th</sup> of April 2023
                 </time>
               </b>
               . Responses can be amended here any time between now and the time
