@@ -48,7 +48,10 @@ CREATE TABLE "public"."guests" (
     "considering" boolean,
     "lastname" "text" NOT NULL,
     "responded_at" timestamp with time zone,
-    "member_of" bigint
+    "member_of" bigint,
+    "attending" boolean DEFAULT false NOT NULL,
+    "plusOne" boolean DEFAULT false,
+    "notes" "text"
 );
 
 

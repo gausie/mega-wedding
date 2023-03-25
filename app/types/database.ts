@@ -130,6 +130,8 @@ export interface paths {
           responded_at?: parameters["rowFilter.guests.responded_at"];
           member_of?: parameters["rowFilter.guests.member_of"];
           attending?: parameters["rowFilter.guests.attending"];
+          plusOne?: parameters["rowFilter.guests.plusOne"];
+          notes?: parameters["rowFilter.guests.notes"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -189,6 +191,8 @@ export interface paths {
           responded_at?: parameters["rowFilter.guests.responded_at"];
           member_of?: parameters["rowFilter.guests.member_of"];
           attending?: parameters["rowFilter.guests.attending"];
+          plusOne?: parameters["rowFilter.guests.plusOne"];
+          notes?: parameters["rowFilter.guests.notes"];
         };
         header: {
           /** Preference */
@@ -212,6 +216,8 @@ export interface paths {
           responded_at?: parameters["rowFilter.guests.responded_at"];
           member_of?: parameters["rowFilter.guests.member_of"];
           attending?: parameters["rowFilter.guests.attending"];
+          plusOne?: parameters["rowFilter.guests.plusOne"];
+          notes?: parameters["rowFilter.guests.notes"];
         };
         body: {
           /** guests */
@@ -485,6 +491,13 @@ export interface definitions {
      * @default false
      */
     attending: boolean;
+    /**
+     * Format: boolean
+     * @default false
+     */
+    plusOne?: boolean;
+    /** Format: text */
+    notes?: string;
   };
   /** @description Temporary table for collecting email addresses for STDs */
   std_form: {
@@ -608,6 +621,10 @@ export interface parameters {
   "rowFilter.guests.member_of": string;
   /** Format: boolean */
   "rowFilter.guests.attending": string;
+  /** Format: boolean */
+  "rowFilter.guests.plusOne": string;
+  /** Format: text */
+  "rowFilter.guests.notes": string;
   /** @description std_form */
   "body.std_form": definitions["std_form"];
   /** Format: bigint */

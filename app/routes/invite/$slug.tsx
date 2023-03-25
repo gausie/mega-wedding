@@ -21,10 +21,6 @@ import {
   Button,
   SimpleGrid,
   Link,
-  Card,
-  CardHeader,
-  CardBody,
-  Image,
 } from "@chakra-ui/react";
 
 import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
@@ -37,10 +33,13 @@ import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
 import WeddingDate from "~/components/WeddingDate";
 import WeddingMap from "~/components/WeddingMap";
-import { fullname } from "~/utils";
-import { faMapPin } from "@fortawesome/free-solid-svg-icons";
-import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fullname, isNotNull } from "~/utils";
+import FoodCard from "~/components/FoodCard";
+import CarpoolingCard from "~/components/CarpoolingCard";
+import LocationCard from "~/components/LocationCard";
+import DressCodeCard from "~/components/DressCodeCard";
+import GiftsCard from "~/components/GiftsCard";
+import TimelineCard from "~/components/TimelineCard";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
@@ -107,22 +106,11 @@ export const action: ActionFunction = async ({ params, request }) => {
   // this will just use the last value we have
   const deduplicatedBody = Object.fromEntries(body.entries());
 
-  let naughty = false;
-
-  const [yes, no] = Object.entries(deduplicatedBody).reduce(
-    ([yes, no], [key, value]) => {
-      const [type, stringId] = key.split(".");
-      const id = Number(stringId);
-      if (!inviteesMap.has(id)) {
-        // This should NEVER happen. Who is messing with my form?!?!
-        naughty = true;
-        return [yes, no];
-      }
-      if (type !== "rsvp") return [yes, no];
-      return value === "true" ? [[...yes, id], no] : [yes, [...no, id]];
-    },
-    [[], []] as [number[], number[]]
-  );
+  const naughty = Object.keys(deduplicatedBody).some((k) => {
+    const [_, stringId] = k.split(".");
+    const id = Number(stringId);
+    return !inviteesMap.has(id);
+  });
 
   if (naughty) {
     sendTelegramMessage(
@@ -130,6 +118,25 @@ export const action: ActionFunction = async ({ params, request }) => {
     );
     return { success: false, reason: "Don't fuck with my form" };
   }
+
+  const [yes, no] = Object.entries(deduplicatedBody).reduce(
+    ([yes, no], [key, value]) => {
+      const [type, stringId] = key.split(".");
+      const id = Number(stringId);
+      if (type !== "rsvp") return [yes, no];
+      return value === "true" ? [[...yes, id], no] : [yes, [...no, id]];
+    },
+    [[], []] as [number[], number[]]
+  );
+
+  const notes = Object.entries(deduplicatedBody)
+    .map(([key, value]) => {
+      const [type, stringId] = key.split(".");
+      const id = Number(stringId);
+      if (type !== "notes" || typeof value !== "string") return null;
+      return [id, value] as const;
+    })
+    .filter(isNotNull);
 
   await Promise.all([
     supabase
@@ -148,17 +155,39 @@ export const action: ActionFunction = async ({ params, request }) => {
       .in("id", no),
   ]);
 
-  sendTelegramMessage(
-    `New RSVP:${
-      yes.length > 0
-        ? `\n✔️: ${yes.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
-        : ""
-    }${
-      no.length > 0
-        ? `\n❌: ${no.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
-        : ""
-    }`
-  );
+  for (const [id, note] of notes) {
+    await supabase
+      .from<Guest>("guests")
+      .update({
+        notes: note || undefined,
+      })
+      .eq("id", id);
+  }
+
+  const notesToShow = notes.filter(([_id, note]) => note);
+
+  const tgMessage = `New RSVP:${
+    yes.length > 0
+      ? `\n✔️: ${yes.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
+      : ""
+  }${
+    no.length > 0
+      ? `\n❌: ${no.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
+      : ""
+  }${
+    notesToShow.length > 0
+      ? `\nwith notes:\n${notesToShow
+          .map(
+            ([id, note]) =>
+              ` - ${fullname(inviteesMap.get(id))}: ${note || "(none)"}`
+          )
+          .join("\n")}`
+      : ""
+  }`;
+
+  console.log(tgMessage);
+
+  sendTelegramMessage(tgMessage);
 
   return { success: true };
 };
@@ -208,62 +237,12 @@ export default function InternationalSlug() {
               spacing={4}
               templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
             >
-              <Card>
-                <CardHeader>
-                  <Heading as="h3" size="md">
-                    Location
-                  </Heading>
-                </CardHeader>
-                <CardBody>
-                  <Stack spacing={2}>
-                    <Image src="/colstoun.webp" alt="The main house" />
-                    <Text>
-                      Colston House is a country home around 30 minutes' travel
-                      from the centre of Edinburgh.
-                    </Text>
-                    <Link
-                      color="primary.700"
-                      href="https://goo.gl/maps/ZhfL8jpvd8HAqaGB7"
-                    >
-                      <FontAwesomeIcon icon={faMapPin} /> Colstoun House,
-                      Haddington, EH41 4PA
-                    </Link>
-                  </Stack>
-                </CardBody>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Heading as="h3" size="md">
-                    Dress Code
-                  </Heading>
-                </CardHeader>
-                <CardBody>
-                  <Text>The vibes are good</Text>
-                </CardBody>
-              </Card>
-              <Card>
-                <CardHeader>
-                  <Heading as="h3" size="md">
-                    Carpooling
-                  </Heading>
-                </CardHeader>
-                <CardBody>
-                  <Stack spacing={2}>
-                    <Text>
-                      The venue is only a 30 minute journey from the centre of
-                      Edinburgh. If you have space in a car, are looking for
-                      space, or want to share a cab; we've set up a WhatsApp
-                      group for finding other guests.
-                    </Text>
-                    <Link
-                      color="primary.700"
-                      href="https://chat.whatsapp.com/JfIoHNRm7hM9MAObljVDml"
-                    >
-                      <FontAwesomeIcon icon={faWhatsapp} /> Join the group
-                    </Link>
-                  </Stack>
-                </CardBody>
-              </Card>
+              <LocationCard />
+              <DressCodeCard />
+              <FoodCard />
+              <GiftsCard />
+              <TimelineCard />
+              <CarpoolingCard />
             </SimpleGrid>
 
             <Heading as="h3" size="lg">
@@ -290,11 +269,11 @@ export default function InternationalSlug() {
               with any queries.
             </Text>
 
-            <Form method="post">
+            <Form method="post" style={{ width: "100%" }}>
               <fieldset>
-                <Stack alignItems="center" spacing={8}>
+                <Stack alignItems="center" spacing={8} width="100%">
                   <CheckboxGroup>
-                    <Stack>
+                    <Stack width="100%">
                       {party.guests.map((i) => (
                         <RSVP key={i.id} whichKey="attending" invitee={i} />
                       ))}
