@@ -28,13 +28,13 @@ import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
 import { supabase } from "~/lib/supabase.server";
 import { sendTelegramMessage } from "~/lib/telegram.server";
 
-import type { definitions } from "~/types/database";
 import Alert from "~/components/Alert";
 import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
 import WeddingDate from "~/components/WeddingDate";
 import WeddingMap from "~/components/WeddingMap";
 import { fullname } from "~/utils";
+import type { Database } from "~/types/supabase";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
@@ -45,20 +45,23 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: mapBoxStyles },
 ];
 
-type Party = definitions["parties_with_names"];
-type Guest = definitions["guests"];
+type Guest = Database["public"]["Tables"]["guests"]["Row"];
+type Party = Database["public"]["Views"]["parties_with_names"]["Row"] & {
+  guests: Guest[];
+};
 
 async function getParty(pin?: string) {
   if (pin) {
     const { data } = await supabase
-      .from<Party & { guests: Guest[] }>("parties_with_names")
+      .from("parties_with_names")
       .select(`*, guests(*)`)
       .is("international", true)
       .eq("pin", pin.toLowerCase())
       .limit(1)
+      .order("id")
       .single();
 
-    return data;
+    return data as Party;
   }
 
   return null;
@@ -96,6 +99,8 @@ export const action: ActionFunction = async ({ params, request }) => {
   // This should never happen, should probably log this
   if (party === null) return redirect("/");
 
+  if (!party.guests) return;
+
   const inviteesMap = new Map(party.guests.map((i) => [i.id || 0, i]));
 
   // This doesn't respect the beauty of FormData but nor do I. In case there are dupes
@@ -128,14 +133,14 @@ export const action: ActionFunction = async ({ params, request }) => {
 
   await Promise.all([
     supabase
-      .from<Guest>("guests")
+      .from("guests")
       .update({
         considering: true,
         responded_at: new Date().toISOString(),
       })
       .in("id", yes),
     supabase
-      .from<Guest>("guests")
+      .from("guests")
       .update({
         considering: false,
         responded_at: new Date().toISOString(),

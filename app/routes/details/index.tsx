@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 
 import Header from "~/components/Header";
-import type { definitions } from "~/types/database";
 import { supabase } from "~/lib/supabase.server";
 import { sendTelegramMessage } from "~/lib/telegram.server";
 import { fullname } from "~/utils";
@@ -22,8 +21,6 @@ export const meta: MetaFunction = () => {
     title: "Hailey and Sam's Wedding | Details for Save the Date",
   };
 };
-
-type StdFormEntry = definitions["std_form"];
 
 type Body = {
   firstname: string;
@@ -54,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
     return { success: false, reason: "That email address does not look right" };
   }
 
-  await Promise.all([supabase.from<StdFormEntry>("std_form").insert(body)]);
+  await Promise.all([supabase.from("std_form").insert(body)]);
 
   sendTelegramMessage(
     `New STD details:\n✍️: *${fullname(body)}* gave the email address *${

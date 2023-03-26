@@ -29,7 +29,6 @@ import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
 import { supabase } from "~/lib/supabase.server";
 import { sendTelegramMessage } from "~/lib/telegram.server";
 
-import type { definitions } from "~/types/database";
 import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
 import WeddingMap from "~/components/WeddingMap";
@@ -40,6 +39,7 @@ import LocationCard from "~/components/LocationCard";
 import DressCodeCard from "~/components/DressCodeCard";
 import GiftsCard from "~/components/GiftsCard";
 import TimelineCard from "~/components/TimelineCard";
+import type { Database } from "~/types/supabase";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
@@ -50,13 +50,15 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: mapBoxStyles },
 ];
 
-type Party = definitions["parties_with_names"];
-type Guest = definitions["guests"];
+type Guest = Database["public"]["Tables"]["guests"]["Row"];
+type Party = Database["public"]["Views"]["parties_with_names"]["Row"] & {
+  guests: Guest[];
+};
 
 async function getParty(pin?: string) {
   if (pin) {
     const { data } = await supabase
-      .from<Party & { guests: Guest[] }>("parties_with_names")
+      .from("parties_with_names")
       .select(`*, guests(*)`)
       .is("international", true)
       .eq("pin", pin.toLowerCase())
@@ -64,7 +66,7 @@ async function getParty(pin?: string) {
       .order("id")
       .single();
 
-    return data;
+    return data as Party;
   }
 
   return null;
@@ -143,14 +145,14 @@ export const action: ActionFunction = async ({ params, request }) => {
 
   await Promise.all([
     supabase
-      .from<Guest>("guests")
+      .from("guests")
       .update({
         attending: true,
         responded_at: new Date().toISOString(),
       })
       .in("id", yes),
     supabase
-      .from<Guest>("guests")
+      .from("guests")
       .update({
         attending: false,
         responded_at: new Date().toISOString(),
@@ -160,7 +162,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 
   for (const inviteeId of inviteesMap.keys()) {
     await supabase
-      .from<Guest>("guests")
+      .from("guests")
       .update({
         notes: notes[inviteeId] || null,
       })
@@ -197,7 +199,7 @@ type ActionData = { success: true } | { success: false; reason: string };
 
 export default function InternationalSlug() {
   const transition = useTransition();
-  const party = useLoaderData() as Party & { guests: Guest[] };
+  const party = useLoaderData<typeof loader>();
   const actionData = useActionData() as ActionData | undefined;
 
   const [buttonText, buttonColourScheme] = (() => {

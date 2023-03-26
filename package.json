@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "format": "prettier --write -- 'app/**/*.{ts,tsx}'",
     "start": "remix-serve build",
-    "generate-types": "export $(cat .env) && openapi-typescript \"${SUPABASE_URL}/rest/v1/?apikey=${SUPABASE_ANON_KEY}\" --version=2 --output app/types/database.ts",
+    "update-types": "export $(cat .env) && npx supabase gen types typescript --project-id \"$SUPABASE_PROJECT_ID\" > app/types/supabase.ts",
     "dump-schema": "export $(cat .env) && export PGPASSWORD=$DATABASE_PASSWORD && pg_dump --schema=public --quote-all-identifiers --schema-only -h $DATABASE_HOST -U postgres > supabase.sql"
   },
   "dependencies": {
@@ -26,7 +26,7 @@
     "@remix-run/node": "^1.3.5",
     "@remix-run/react": "^1.3.5",
     "@remix-run/serve": "^1.3.5",
-    "@supabase/supabase-js": "^1.35.3",
+    "@supabase/supabase-js": "^2.12.1",
     "datebook": "^7.0.8",
     "dotenv": "^16.0.1",
     "framer-motion": "^6",

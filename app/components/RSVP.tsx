@@ -1,17 +1,15 @@
 import { Checkbox, HStack, Input } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import type { definitions } from "~/types/database";
-
-type Guest = definitions["guests"];
+import type { Database } from "~/types/supabase";
 
 type Props = {
-  invitee: Guest;
+  invitee: Database["public"]["Tables"]["guests"]["Row"];
   whichKey: "considering" | "attending";
   disabled?: boolean;
 };
 
 export default function RSVP({ invitee, whichKey, disabled = false }: Props) {
-  const propValue = invitee[whichKey];
+  const propValue = invitee[whichKey] || false;
   const [value, setValue] = useState(propValue);
   useEffect(() => setValue(propValue), [propValue]);
 
