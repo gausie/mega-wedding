@@ -26,8 +26,8 @@ export default function TravelCard() {
             Station and Edinburgh Airport.
           </Text>
           <Text>
-            We've created a WhatsApp group for guests looking to share a car or
-            taxi.
+            We have created a WhatsApp group for guests looking to share a car
+            or taxi.
           </Text>
         </Stack>
       </CardBody>
