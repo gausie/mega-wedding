@@ -60,7 +60,6 @@ async function getParty(pin?: string) {
     const { data } = await supabase
       .from("parties_with_names")
       .select(`*, guests(*)`)
-      .is("international", true)
       .eq("pin", pin.toLowerCase())
       .limit(1)
       .order("id")
@@ -75,11 +74,11 @@ async function getParty(pin?: string) {
 export const loader: LoaderFunction = async ({ params }) => {
   const party = await getParty(params.slug);
 
-  if (party === null) return redirect("/international");
+  if (party === null) return redirect("/invite");
 
   if (party.visited_at === null) {
     sendTelegramMessage(
-      `${party.generated_name!} visited the International RSVP page for the first time`
+      `${party.generated_name!} visited the RSVP page for the first time`
     );
   }
 
