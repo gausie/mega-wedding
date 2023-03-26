@@ -1,7 +1,7 @@
 import type {
   ActionFunction,
   LinksFunction,
-  LoaderFunction,
+  LoaderArgs,
   MetaFunction,
 } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
@@ -71,7 +71,7 @@ async function getParty(pin?: string) {
   return null;
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
+export const loader = async ({ params }: LoaderArgs) => {
   const party = await getParty(params.slug);
 
   if (party === null) return redirect("/invite");
