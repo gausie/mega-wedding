@@ -46,13 +46,13 @@ export default function International() {
         height="100%"
         maxWidth={400}
       >
-        <Alert title="We're no longer accepting international responses">
-          {/* Please provide your RSVP{" "}
-          <Link color="primary.700" href="/invite">
+        <Alert title="We are no longer accepting international responses">
+          Please provide your RSVP{" "}
+          <Link color="primary.300" href="/invite">
             at the appropriate page
           </Link>
           , which contains more details and is accessed using the same unique
-          pin. <Link href="/invite">➺</Link> */}
+          pin. <Link href="/invite">➺</Link>
         </Alert>
 
         <Text as="div">Please enter the unique pin found in your email</Text>

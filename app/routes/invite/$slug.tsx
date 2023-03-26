@@ -21,6 +21,7 @@ import {
   Button,
   SimpleGrid,
   Link,
+  Box,
 } from "@chakra-ui/react";
 
 import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
@@ -31,11 +32,10 @@ import { sendTelegramMessage } from "~/lib/telegram.server";
 import type { definitions } from "~/types/database";
 import Header from "~/components/Header";
 import RSVP from "~/components/RSVP";
-import WeddingDate from "~/components/WeddingDate";
 import WeddingMap from "~/components/WeddingMap";
 import { fullname, isNotNull } from "~/utils";
 import FoodCard from "~/components/FoodCard";
-import CarpoolingCard from "~/components/CarpoolingCard";
+import TravelCard from "~/components/TravelCard";
 import LocationCard from "~/components/LocationCard";
 import DressCodeCard from "~/components/DressCodeCard";
 import GiftsCard from "~/components/GiftsCard";
@@ -61,6 +61,7 @@ async function getParty(pin?: string) {
       .is("international", true)
       .eq("pin", pin.toLowerCase())
       .limit(1)
+      .order("id")
       .single();
 
     return data;
@@ -107,7 +108,7 @@ export const action: ActionFunction = async ({ params, request }) => {
   const deduplicatedBody = Object.fromEntries(body.entries());
 
   const naughty = Object.keys(deduplicatedBody).some((k) => {
-    const [_, stringId] = k.split(".");
+    const [, stringId] = k.split(".");
     const id = Number(stringId);
     return !inviteesMap.has(id);
   });
@@ -129,14 +130,16 @@ export const action: ActionFunction = async ({ params, request }) => {
     [[], []] as [number[], number[]]
   );
 
-  const notes = Object.entries(deduplicatedBody)
-    .map(([key, value]) => {
-      const [type, stringId] = key.split(".");
-      const id = Number(stringId);
-      if (type !== "notes" || typeof value !== "string") return null;
-      return [id, value] as const;
-    })
-    .filter(isNotNull);
+  const notes = Object.fromEntries(
+    Object.entries(deduplicatedBody)
+      .map(([key, value]) => {
+        const [type, stringId] = key.split(".");
+        const id = Number(stringId);
+        if (type !== "notes" || typeof value !== "string") return null;
+        return [id, value] as const;
+      })
+      .filter(isNotNull)
+  );
 
   await Promise.all([
     supabase
@@ -155,16 +158,14 @@ export const action: ActionFunction = async ({ params, request }) => {
       .in("id", no),
   ]);
 
-  for (const [id, note] of notes) {
+  for (const inviteeId of inviteesMap.keys()) {
     await supabase
       .from<Guest>("guests")
       .update({
-        notes: note || undefined,
+        notes: notes[inviteeId] || null,
       })
-      .eq("id", id);
+      .eq("id", inviteeId);
   }
-
-  const notesToShow = notes.filter(([_id, note]) => note);
 
   const tgMessage = `New RSVP:${
     yes.length > 0
@@ -175,11 +176,11 @@ export const action: ActionFunction = async ({ params, request }) => {
       ? `\n❌: ${no.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
       : ""
   }${
-    notesToShow.length > 0
-      ? `\nwith notes:\n${notesToShow
+    Object.values(notes).length > 0
+      ? `\nwith notes:\n${Object.entries(notes)
           .map(
             ([id, note]) =>
-              ` - ${fullname(inviteesMap.get(id))}: ${note || "(none)"}`
+              ` - ${fullname(inviteesMap.get(Number(id)))}: ${note || "(none)"}`
           )
           .join("\n")}`
       : ""
@@ -221,12 +222,33 @@ export default function InternationalSlug() {
           >
             <Heading>Our Wedding</Heading>
 
-            <Text as="div">
-              It would be a sincere pleasure for you to join us on the occasion
-              of our wedding. On <WeddingDate dayOfWeek />, we will be married
-              in Colstoun House, Haddington &ndash; 17 miles east of our home in
-              central Edinburgh.
-            </Text>
+            <Stack spacing={4}>
+              <Text>Together with their families</Text>
+
+              <div>
+                <Text>ביום כ״ט בסיון תשפ״ג</Text>
+                <Text>
+                  corresponding to Sunday the 18<sup>th</sup> of June 2023
+                </Text>
+              </div>
+
+              <Box fontSize="xl">
+                <Text>חיה לאה בת מיכאל גבר</Text>
+                <Text>Hailey Zislis</Text>
+              </Box>
+
+              <Text>and</Text>
+
+              <Box fontSize="xl">
+                <Text>שמואל יהושע בן בינם חיים מאיר</Text>
+                <Text>Samuel Gaus</Text>
+              </Box>
+
+              <div>
+                <Text>Invite you to share in the simcha of their marriage</Text>
+                <Text>As they become the Zislis-Gaus family</Text>
+              </div>
+            </Stack>
 
             <Heading as="h3" size="lg">
               Details
@@ -239,10 +261,10 @@ export default function InternationalSlug() {
             >
               <LocationCard />
               <DressCodeCard />
+              <TravelCard />
+              <TimelineCard />
               <FoodCard />
               <GiftsCard />
-              <TimelineCard />
-              <CarpoolingCard />
             </SimpleGrid>
 
             <Heading as="h3" size="lg">
@@ -250,23 +272,15 @@ export default function InternationalSlug() {
             </Heading>
 
             <Text>
-              Please tick the box next to the name of any individual planning to
-              attend. We kindly ask for your response by the{" "}
+              We kindly ask for your response by the{" "}
               <b>
-                <time dateTime="2023-04-09">
-                  9<sup>th</sup> of April 2023
+                <time dateTime="2023-04-23">
+                  23<sup>rd</sup> of April 2023
                 </time>
               </b>
-              . Responses can be amended here any time between now and the time
-              limit.
-            </Text>
-
-            <Text>
-              Please do not hesitate to{" "}
-              <Link color="primary" href="mailto:hello@haileyandsam.co.uk">
-                reach out to us
-              </Link>{" "}
-              with any queries.
+              . Please tick the box next to the name of any individual planning
+              to attend. Responses can be amended here any time between now and
+              the time limit.
             </Text>
 
             <Form method="post" style={{ width: "100%" }}>
@@ -291,6 +305,14 @@ export default function InternationalSlug() {
                 </Stack>
               </fieldset>
             </Form>
+
+            <Text>
+              Please do not hesitate to{" "}
+              <Link color="primary.300" href="mailto:hello@haileyandsam.co.uk">
+                reach out to us
+              </Link>{" "}
+              with any queries.
+            </Text>
           </Stack>
           <WeddingMap minHeight={200} />
         </Stack>

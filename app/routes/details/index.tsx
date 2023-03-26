@@ -51,7 +51,7 @@ export const action: ActionFunction = async ({ request }) => {
   }
 
   if (!/(.+)@(.+){2,}\.(.+){2,}/.test(body.email)) {
-    return { success: false, reason: "That email address doesn't look right" };
+    return { success: false, reason: "That email address does not look right" };
   }
 
   await Promise.all([supabase.from<StdFormEntry>("std_form").insert(body)]);

@@ -179,13 +179,13 @@ export default function InternationalSlug() {
       <Container maxW="6xl" mb={16}>
         <SimpleGrid columns={[1, 2]} spacing={[10, 8]}>
           <Stack spacing={8} textAlign="center">
-            <Alert title="We're no longer accepting international responses">
-              {/* If you haven't already done so, please provide your full RSVP{" "}
-              <Link color="primary.700" href={`/invite/${slug}`}>
+            <Alert title="We are no longer accepting international responses">
+              If you have not already done so, please provide your full RSVP{" "}
+              <Link color="primary.300" href={`/invite/${slug}`}>
                 at the appropriate page
               </Link>
               , which contains more details.{" "}
-              <Link href={`/invite/${slug}`}>➺</Link> */}
+              <Link href={`/invite/${slug}`}>➺</Link>
             </Alert>
 
             <Heading>Our Wedding</Heading>
@@ -213,15 +213,6 @@ export default function InternationalSlug() {
               Please tick the box next to the name of any individual planning to
               travel to Scotland for the wedding. Responses can be amended here
               any time between now and the time limit.
-            </Text>
-
-            <Text>
-              Further details of the event will be made available in late
-              summer, but in the meantime please do not hesitate to{" "}
-              <Link color="primary" href="mailto:hello@haileyandsam.co.uk">
-                reach out to us
-              </Link>{" "}
-              with any queries.
             </Text>
 
             <Form method="post">
@@ -252,6 +243,15 @@ export default function InternationalSlug() {
                 </Stack>
               </fieldset>
             </Form>
+
+            <Text>
+              Further details of the event will be made available in late
+              summer, but in the meantime please do not hesitate to{" "}
+              <Link color="primary.300" href="mailto:hello@haileyandsam.co.uk">
+                reach out to us
+              </Link>{" "}
+              with any queries.
+            </Text>
           </Stack>
           <WeddingMap />
         </SimpleGrid>

@@ -497,7 +497,7 @@ export interface definitions {
      */
     plusOne?: boolean;
     /** Format: text */
-    notes?: string;
+    notes?: string | null;
   };
   /** @description Temporary table for collecting email addresses for STDs */
   std_form: {

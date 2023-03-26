@@ -42,7 +42,7 @@ export default function RSVP({ invitee, whichKey, disabled = false }: Props) {
       <Input
         value={note || ""}
         name={`notes.${invitee.id}`}
-        placeholder="Dietary requirements etc."
+        placeholder="Dietary requirements, etc."
         onChange={(e) => setNote(e.currentTarget.value)}
         maxWidth={200}
       />

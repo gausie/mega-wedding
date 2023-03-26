@@ -1,17 +1,10 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Heading,
-  Stack,
-  Text,
-  Link,
-} from "@chakra-ui/react";
+import { CardBody, CardHeader, Heading, Stack, Text } from "@chakra-ui/react";
+import BorderCard from "./BorderCard";
 
 export default function FoodCard() {
   return (
-    <Card>
-      <CardHeader>
+    <BorderCard>
+      <CardHeader paddingBottom={0}>
         <Heading as="h3" size="md">
           Food
         </Heading>
@@ -19,18 +12,21 @@ export default function FoodCard() {
       <CardBody>
         <Stack spacing={2}>
           <Text>
-            All food at the wedding will be vegetarian. Our caterer will be
-            following{" "}
-            <Link color="primary.700" href="/SAMS Wedding - Kashrut Policy.pdf">
-              guidance
-            </Link>{" "}
-            issued by our celebrant, Rabbi Adam Zagoria-Moffet of St. Albans
-            Masorti Synagogue. If you have any further dietary requirements
-            (vegan, gluten free, etc) please let us know when completing your
-            RSVP.
+            All food at the wedding will be strictly vegetarian. Kosher wine
+            will be used for ritual purposes and is additionally available upon
+            request.
+          </Text>
+          <Text>
+            Our caterer will be unsupervised, following guidance issued by our
+            Messader Kiddushin, Rabbi Adam Zagoria-Moffet of St Albans Masorti
+            Synagogue.
+          </Text>
+          <Text>
+            If you have any further dietary requirements or questions about
+            kashrut, please let us know when completing your RSVP.
           </Text>
         </Stack>
       </CardBody>
-    </Card>
+    </BorderCard>
   );
 }
