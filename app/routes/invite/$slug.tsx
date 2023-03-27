@@ -147,6 +147,7 @@ export const action: ActionFunction = async ({ params, request }) => {
       .from("guests")
       .update({
         attending: true,
+        considering: true,
         responded_at: new Date().toISOString(),
       })
       .in("id", yes),
@@ -154,6 +155,7 @@ export const action: ActionFunction = async ({ params, request }) => {
       .from("guests")
       .update({
         attending: false,
+        considering: false,
         responded_at: new Date().toISOString(),
       })
       .in("id", no),
