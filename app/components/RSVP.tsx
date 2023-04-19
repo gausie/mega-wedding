@@ -1,5 +1,5 @@
-import { Checkbox, HStack, Input } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { Grid, HStack, Input, Radio, RadioGroup, Text } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import type { Database } from "~/types/supabase";
 
 type Props = {
@@ -9,41 +9,35 @@ type Props = {
 };
 
 export default function RSVP({ invitee, whichKey, disabled = false }: Props) {
-  const propValue = invitee[whichKey] || false;
-  const [value, setValue] = useState(propValue);
-  useEffect(() => setValue(propValue), [propValue]);
-
-  const [note, setNote] = useState(invitee.notes);
-  useEffect(() => setNote(invitee.notes), [invitee.notes]);
-
-  const toggle = useCallback(() => setValue((v) => !v), []);
+  const propValue = invitee[whichKey];
 
   const title = invitee.responded_at
     ? `Last responded at ${invitee.responded_at}`
     : "No response yet";
 
   return (
-    <HStack justifyContent="center">
-      <input
-        type="hidden"
+    <Grid templateColumns="1fr 2fr 2fr" maxWidth="80%">
+      <RadioGroup
         name={`rsvp.${invitee.id}`}
-        value={value ? "true" : "false"}
-      />
-      <Checkbox
-        isChecked={value}
-        onChange={toggle}
         title={title}
-        disabled={disabled}
+        isDisabled={disabled}
+        defaultValue={
+          propValue === null ? undefined : propValue === true ? "true" : "false"
+        }
       >
+        <HStack>
+          <Radio value="true">Yes</Radio>
+          <Radio value="false">No</Radio>
+        </HStack>
+      </RadioGroup>
+      <Text>
         {invitee.firstname} {invitee.lastname}
-      </Checkbox>
+      </Text>
       <Input
-        value={note || ""}
         name={`notes.${invitee.id}`}
         placeholder="Dietary requirements, etc."
-        onChange={(e) => setNote(e.currentTarget.value)}
-        maxWidth={200}
+        maxWidth={300}
       />
-    </HStack>
+    </Grid>
   );
 }

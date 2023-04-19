@@ -290,7 +290,7 @@ export default function InternationalSlug() {
               <fieldset>
                 <Stack alignItems="center" spacing={8} width="100%">
                   <CheckboxGroup>
-                    <Stack width="100%">
+                    <Stack width="100%" alignItems="center">
                       {party.guests.map((i) => (
                         <RSVP key={i.id} whichKey="attending" invitee={i} />
                       ))}

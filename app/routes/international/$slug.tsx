@@ -17,7 +17,6 @@ import {
   Heading,
   Stack,
   Text,
-  CheckboxGroup,
   Button,
   SimpleGrid,
   Link,
@@ -223,18 +222,16 @@ export default function InternationalSlug() {
             <Form method="post">
               <fieldset>
                 <Stack alignItems="center" spacing={8}>
-                  <CheckboxGroup>
-                    <Stack>
-                      {party.guests.map((i) => (
-                        <RSVP
-                          key={i.id}
-                          whichKey="considering"
-                          invitee={i}
-                          disabled
-                        />
-                      ))}
-                    </Stack>
-                  </CheckboxGroup>
+                  <Stack width="100%" alignItems="center">
+                    {party.guests.map((i) => (
+                      <RSVP
+                        key={i.id}
+                        whichKey="considering"
+                        invitee={i}
+                        disabled
+                      />
+                    ))}
+                  </Stack>
                   <Button
                     colorScheme={buttonColourScheme}
                     type="submit"
