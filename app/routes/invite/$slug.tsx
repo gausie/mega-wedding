@@ -126,6 +126,7 @@ export const action: ActionFunction = async ({ params, request }) => {
       const [type, stringId] = key.split(".");
       const id = Number(stringId);
       if (type !== "rsvp") return [yes, no];
+      if (value === undefined) return [yes, no];
       return value === "true" ? [[...yes, id], no] : [yes, [...no, id]];
     },
     [[], []] as [number[], number[]]
@@ -147,7 +148,6 @@ export const action: ActionFunction = async ({ params, request }) => {
       .from("guests")
       .update({
         attending: true,
-        considering: true,
         responded_at: new Date().toISOString(),
       })
       .in("id", yes),
@@ -155,7 +155,6 @@ export const action: ActionFunction = async ({ params, request }) => {
       .from("guests")
       .update({
         attending: false,
-        considering: false,
         responded_at: new Date().toISOString(),
       })
       .in("id", no),
