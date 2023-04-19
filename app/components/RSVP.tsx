@@ -1,5 +1,4 @@
 import { Grid, HStack, Input, Radio, RadioGroup, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import type { Database } from "~/types/supabase";
 
 type Props = {
@@ -16,7 +15,15 @@ export default function RSVP({ invitee, whichKey, disabled = false }: Props) {
     : "No response yet";
 
   return (
-    <Grid templateColumns="1fr 2fr 2fr" maxWidth="80%">
+    <Grid
+      templateColumns="2fr 1fr 2fr"
+      alignItems="center"
+      maxWidth="80%"
+      gap={4}
+    >
+      <Text>
+        {invitee.firstname} {invitee.lastname}
+      </Text>
       <RadioGroup
         name={`rsvp.${invitee.id}`}
         title={title}
@@ -30,13 +37,11 @@ export default function RSVP({ invitee, whichKey, disabled = false }: Props) {
           <Radio value="false">No</Radio>
         </HStack>
       </RadioGroup>
-      <Text>
-        {invitee.firstname} {invitee.lastname}
-      </Text>
       <Input
         name={`notes.${invitee.id}`}
         placeholder="Dietary requirements, etc."
         maxWidth={300}
+        defaultValue={invitee.notes || ""}
       />
     </Grid>
   );
