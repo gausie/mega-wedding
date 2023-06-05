@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 14.1
--- Dumped by pg_dump version 15.2
+-- Dumped by pg_dump version 15.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -51,7 +51,9 @@ CREATE TABLE "public"."guests" (
     "member_of" bigint,
     "attending" boolean,
     "plusOne" boolean DEFAULT false,
-    "notes" "text"
+    "notes" "text",
+    "dessert" numeric DEFAULT '0'::numeric NOT NULL,
+    CONSTRAINT "guests_dessert_check" CHECK ((("dessert" >= (0)::numeric) AND ("dessert" < (3)::numeric)))
 );
 
 
