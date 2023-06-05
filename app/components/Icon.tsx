@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { ClassNames } from "@emotion/react";
 
-type Props = { icon: IconProp };
+type Props = { icon: IconProp; mask?: IconProp };
 
 export default function Icon({ icon }: Props) {
   return (

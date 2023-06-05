@@ -21,7 +21,11 @@ import {
   Button,
   SimpleGrid,
   Link,
-  Box,
+  CardBody,
+  RadioGroup,
+  HStack,
+  Radio,
+  CardFooter,
 } from "@chakra-ui/react";
 
 import mapBoxStyles from "mapbox-gl/dist/mapbox-gl.css";
@@ -30,24 +34,26 @@ import { supabase } from "~/lib/supabase.server";
 import { sendTelegramMessage } from "~/lib/telegram.server";
 
 import Header from "~/components/Header";
-import RSVP from "~/components/RSVP";
 import WeddingMap from "~/components/WeddingMap";
-import { fullname, isNotNull } from "~/utils";
-import FoodCard from "~/components/FoodCard";
-import TravelCard from "~/components/TravelCard";
-import LocationCard from "~/components/LocationCard";
-import DressCodeCard from "~/components/DressCodeCard";
-import GiftsCard from "~/components/GiftsCard";
-import TimelineCard from "~/components/TimelineCard";
+import { fullname } from "~/utils";
 import type { Database } from "~/types/supabase";
+import BorderCard from "~/components/BorderCard";
+import RSVPContainer from "~/components/RSVPContainer";
+import { faBan, faLeaf, faWheatAwn } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
-  title: "Hailey and Sam's Wedding | RSVP",
+  title: "Hailey and Sam's Wedding | Dessert",
 });
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: mapBoxStyles },
+];
+
+const NO_CHOICE = [
+  33, // Joan
+  153, // Cesco
 ];
 
 type Guest = Database["public"]["Tables"]["guests"]["Row"];
@@ -62,7 +68,7 @@ async function getParty(pin?: string) {
       .select(`*, guests(*)`)
       .eq("pin", pin.toLowerCase())
       .limit(1)
-      .order("id")
+      .order("id", { foreignTable: "guests" })
       .single();
 
     return data as Party;
@@ -75,12 +81,6 @@ export const loader = async ({ params }: LoaderArgs) => {
   const party = await getParty(params.slug);
 
   if (party === null) return redirect("/invite");
-
-  if (party.visited_at === null) {
-    sendTelegramMessage(
-      `${party.generated_name!} visited the RSVP page for the first time`
-    );
-  }
 
   await supabase
     .from("parties")
@@ -121,70 +121,41 @@ export const action: ActionFunction = async ({ params, request }) => {
     return { success: false, reason: "Don't fuck with my form" };
   }
 
-  const [yes, no] = Object.entries(deduplicatedBody).reduce(
-    ([yes, no], [key, value]) => {
+  const [a, b] = Object.entries(deduplicatedBody).reduce(
+    ([a, b], [key, value]) => {
       const [type, stringId] = key.split(".");
       const id = Number(stringId);
-      if (type !== "rsvp") return [yes, no];
-      if (value === undefined) return [yes, no];
-      return value === "true" ? [[...yes, id], no] : [yes, [...no, id]];
+      if (type !== "dessert") return [a, b];
+      if (value === undefined) return [a, b];
+      return value === "a" ? [[...a, id], b] : [a, [...b, id]];
     },
     [[], []] as [number[], number[]]
-  );
-
-  const notes = Object.fromEntries(
-    Object.entries(deduplicatedBody)
-      .map(([key, value]) => {
-        const [type, stringId] = key.split(".");
-        const id = Number(stringId);
-        if (type !== "notes" || typeof value !== "string") return null;
-        return [id, value] as const;
-      })
-      .filter(isNotNull)
   );
 
   await Promise.all([
     supabase
       .from("guests")
       .update({
-        attending: true,
+        dessert: 1,
         responded_at: new Date().toISOString(),
       })
-      .in("id", yes),
+      .in("id", a),
     supabase
       .from("guests")
       .update({
-        attending: false,
+        dessert: 2,
         responded_at: new Date().toISOString(),
       })
-      .in("id", no),
+      .in("id", b),
   ]);
 
-  for (const inviteeId of inviteesMap.keys()) {
-    await supabase
-      .from("guests")
-      .update({
-        notes: notes[inviteeId] || null,
-      })
-      .eq("id", inviteeId);
-  }
-
-  const tgMessage = `New RSVP:${
-    yes.length > 0
-      ? `\n✔️: ${yes.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
+  const tgMessage = `**Dessert Selection**${
+    a.length > 0
+      ? `\nMeringue: ${a.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
       : ""
   }${
-    no.length > 0
-      ? `\n❌: ${no.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
-      : ""
-  }${
-    Object.values(notes).length > 0
-      ? `\nwith notes:\n${Object.entries(notes)
-          .map(
-            ([id, note]) =>
-              ` - ${fullname(inviteesMap.get(Number(id)))}: ${note || "(none)"}`
-          )
-          .join("\n")}`
+    b.length > 0
+      ? `\nBrownie: ${b.map((i) => fullname(inviteesMap.get(i))).join(", ")}`
       : ""
   }`;
 
@@ -222,68 +193,58 @@ export default function InternationalSlug() {
             maxWidth={800}
             margin="0 auto"
           >
-            <Heading>Our Wedding</Heading>
+            <Heading>Dessert</Heading>
 
             <Stack spacing={4}>
-              <Text>Together with their families</Text>
+              <Text>
+                We can't believe there are fewer than two weeks to go until we
+                welcome you to Colstoun House for our wedding!
+              </Text>
 
-              <div>
-                <Text>ביום כ״ט בסיון תשפ״ג</Text>
-                <Text>
-                  corresponding to Sunday the 18<sup>th</sup> of June 2023
-                </Text>
-              </div>
-
-              <Box fontSize="xl">
-                <Text>חיה לאה בת מיכאל גבר</Text>
-                <Text>Hailey Zislis</Text>
-              </Box>
-
-              <Text>and</Text>
-
-              <Box fontSize="xl">
-                <Text>שמואל יהושע בן בינם חיים מאיר</Text>
-                <Text>Samuel Gaus</Text>
-              </Box>
-
-              <div>
-                <Text>Invite you to share in the simcha of their marriage</Text>
-                <Text>As they become the Zislis-Gaus family</Text>
-              </div>
+              <Text>
+                After a family-style meal, there is a choice of dessert. Please
+                use the form below to let us know your preference by a deadline
+                of{" "}
+                <b>
+                  <time dateTime="2023-06-12">
+                    12<sup>th</sup> of June 2023
+                  </time>
+                </b>
+                .
+              </Text>
             </Stack>
-
-            <Heading as="h3" size="lg">
-              Details
-            </Heading>
 
             <SimpleGrid
               width="100%"
               spacing={4}
-              templateColumns="repeat(auto-fill, minmax(200px, 1fr))"
+              templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
             >
-              <LocationCard />
-              <DressCodeCard />
-              <TravelCard />
-              <TimelineCard />
-              <FoodCard />
-              <GiftsCard />
+              <BorderCard>
+                <CardBody>
+                  Rose and Pistachio Meringue with Cream and Berries
+                </CardBody>
+                <CardFooter>
+                  <HStack justifyContent="center" width="100%">
+                    <span className="fa-layers">
+                      <FontAwesomeIcon icon={faBan} />
+                      <FontAwesomeIcon icon={faWheatAwn} transform="shrink-6" />
+                    </span>
+                    <span>Gluten Free</span>
+                  </HStack>
+                </CardFooter>
+              </BorderCard>
+              <BorderCard>
+                <CardBody>
+                  Cardamom, Orange and Dark Chocolate Brownie with Ice Cream
+                </CardBody>
+                <CardFooter>
+                  <HStack justifyContent="center" width="100%">
+                    <FontAwesomeIcon icon={faLeaf} />
+                    <span>Vegan</span>
+                  </HStack>
+                </CardFooter>
+              </BorderCard>
             </SimpleGrid>
-
-            <Heading as="h3" size="lg">
-              RSVP
-            </Heading>
-
-            <Text>
-              We kindly ask for your response by the{" "}
-              <b>
-                <time dateTime="2023-04-23">
-                  23<sup>rd</sup> of April 2023
-                </time>
-              </b>
-              . Please tick the box next to the name of any individual planning
-              to attend. Responses can be amended here any time between now and
-              the time limit.
-            </Text>
 
             <Form method="post" style={{ width: "100%" }}>
               <fieldset>
@@ -291,7 +252,31 @@ export default function InternationalSlug() {
                   <CheckboxGroup>
                     <Stack width="100%" alignItems="center">
                       {party.guests.map((i) => (
-                        <RSVP key={i.id} whichKey="attending" invitee={i} />
+                        <RSVPContainer
+                          key={i.id}
+                          invitee={i}
+                          templateColumns="1fr 1fr"
+                        >
+                          {NO_CHOICE.includes(i.id) ? (
+                            <>GF and Vegan Meringue</>
+                          ) : (
+                            <RadioGroup
+                              name={`dessert.${i.id}`}
+                              defaultValue={
+                                i.dessert === 0
+                                  ? undefined
+                                  : i.dessert === 1
+                                  ? "a"
+                                  : "b"
+                              }
+                            >
+                              <HStack>
+                                <Radio value="a">Meringue</Radio>
+                                <Radio value="b">Brownie</Radio>
+                              </HStack>
+                            </RadioGroup>
+                          )}
+                        </RSVPContainer>
                       ))}
                     </Stack>
                   </CheckboxGroup>
