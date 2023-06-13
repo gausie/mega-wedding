@@ -4,7 +4,7 @@ import type {
   LoaderArgs,
   MetaFunction,
 } from "@remix-run/node";
-import { redirect } from "@remix-run/node";
+import { Response, redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Form,
@@ -41,6 +41,7 @@ import BorderCard from "~/components/BorderCard";
 import RSVPContainer from "~/components/RSVPContainer";
 import { faBan, faLeaf, faWheatAwn } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Alert from "~/components/Alert";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
@@ -91,6 +92,13 @@ export const loader = async ({ params }: LoaderArgs) => {
 };
 
 export const action: ActionFunction = async ({ params, request }) => {
+  if (Date.now() > 1686658271) {
+    throw new Response(null, {
+      status: 401,
+      statusText: "Deadline has passed",
+    });
+  }
+
   const body = await request.formData();
 
   // Take the messy form data that comes from our RSVP form and sort it into a list of yes and no
@@ -195,6 +203,10 @@ export default function InternationalSlug() {
           >
             <Heading>Dessert</Heading>
 
+            <Alert title="We are no longer accepting dessert selections">
+              If you didn't make one, yours will be randomly assigned
+            </Alert>
+
             <Stack spacing={4}>
               <Text>
                 We can't believe there are fewer than two weeks to go until we
@@ -262,6 +274,7 @@ export default function InternationalSlug() {
                           ) : (
                             <RadioGroup
                               name={`dessert.${i.id}`}
+                              isDisabled
                               defaultValue={
                                 i.dessert === 0
                                   ? undefined
@@ -286,6 +299,7 @@ export default function InternationalSlug() {
                     isLoading={["loading", "submitting"].includes(
                       transition.state
                     )}
+                    isDisabled
                   >
                     {buttonText}
                   </Button>

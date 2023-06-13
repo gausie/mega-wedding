@@ -2,7 +2,6 @@ import {
   Alert as CAlert,
   AlertDescription,
   AlertTitle,
-  Box,
 } from "@chakra-ui/react";
 
 type Props = React.PropsWithChildren<{
@@ -11,11 +10,9 @@ type Props = React.PropsWithChildren<{
 
 export default function Alert({ title, children }: Props) {
   return (
-    <CAlert colorScheme="pink">
-      <Box>
-        <AlertTitle>{title}</AlertTitle>
-        <AlertDescription>{children}</AlertDescription>
-      </Box>
+    <CAlert colorScheme="pink" flexDirection="column">
+      <AlertTitle>{title}</AlertTitle>
+      <AlertDescription>{children}</AlertDescription>
     </CAlert>
   );
 }
