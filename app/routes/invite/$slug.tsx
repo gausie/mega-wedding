@@ -40,6 +40,7 @@ import DressCodeCard from "~/components/DressCodeCard";
 import GiftsCard from "~/components/GiftsCard";
 import TimelineCard from "~/components/TimelineCard";
 import type { Database } from "~/types/supabase";
+import Alert from "~/components/Alert";
 
 export const meta: MetaFunction = () => ({
   robots: "noindex",
@@ -91,6 +92,13 @@ export const loader = async ({ params }: LoaderArgs) => {
 };
 
 export const action: ActionFunction = async ({ params, request }) => {
+  if (Date.now() > 1682290800) {
+    throw new Response(null, {
+      status: 401,
+      statusText: "Deadline has passed",
+    });
+  }
+
   const body = await request.formData();
 
   // Take the messy form data that comes from our RSVP form and sort it into a list of yes and no
@@ -197,7 +205,7 @@ export const action: ActionFunction = async ({ params, request }) => {
 
 type ActionData = { success: true } | { success: false; reason: string };
 
-export default function InternationalSlug() {
+export default function InviteSlug() {
   const transition = useTransition();
   const party = useLoaderData<typeof loader>();
   const actionData = useActionData() as ActionData | undefined;
@@ -223,6 +231,10 @@ export default function InternationalSlug() {
             margin="0 auto"
           >
             <Heading>Our Wedding</Heading>
+
+            <Alert title="RSVPs are now closed">
+              We hope you were able to make it
+            </Alert>
 
             <Stack spacing={4}>
               <Text>Together with their families</Text>
@@ -288,7 +300,7 @@ export default function InternationalSlug() {
             <Form method="post" style={{ width: "100%" }}>
               <fieldset>
                 <Stack alignItems="center" spacing={8} width="100%">
-                  <CheckboxGroup>
+                  <CheckboxGroup isDisabled>
                     <Stack width="100%" alignItems="center">
                       {party.guests.map((i) => (
                         <RSVP key={i.id} whichKey="attending" invitee={i} />
@@ -301,6 +313,7 @@ export default function InternationalSlug() {
                     isLoading={["loading", "submitting"].includes(
                       transition.state
                     )}
+                    isDisabled
                   >
                     {buttonText}
                   </Button>
