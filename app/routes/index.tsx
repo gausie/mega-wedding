@@ -23,9 +23,10 @@ const EPOCH_IN_UNIX = 1687097995;
 const zgNow = () => Math.floor(Date.now() / 1000) - EPOCH_IN_UNIX;
 
 export default function Epoch() {
-  const [timestamp, setTimestamp] = useState(zgNow());
+  const [timestamp, setTimestamp] = useState(0);
 
   useEffect(() => {
+    setTimestamp(zgNow());
     const interval = setInterval(() => setTimestamp(zgNow()), 1000);
     return () => clearInterval(interval);
   }, []);
