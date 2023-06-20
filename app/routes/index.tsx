@@ -1,10 +1,18 @@
 import type { MetaFunction } from "@remix-run/node";
-import { Container, Heading, Link, Stack, Text } from "@chakra-ui/react";
+import {
+  Container,
+  Heading,
+  Link,
+  Stack,
+  StackItem,
+  Text,
+} from "@chakra-ui/react";
 
 import Header from "~/components/Header";
 import { useEffect, useState } from "react";
 import TimeSinceLaunch from "~/components/TimeSinceLaunch";
 import Timestamp from "~/components/Timestamp";
+import { SpecialDate } from "~/components/SpecialDate";
 
 export const meta: MetaFunction = () => ({
   title: "Hailey and Sam's Wedding | Zislis-Gaus Epoch",
@@ -55,6 +63,37 @@ export default function Epoch() {
               as{" "}
             </Text>
             <TimeSinceLaunch timestamp={timestamp} />
+          </Stack>
+          <Stack
+            spacing={4}
+            textAlign="center"
+            alignItems="center"
+            maxWidth={800}
+            margin="0 auto"
+          >
+            <Heading size="lg" as="h3">
+              Special Dates
+            </Heading>
+            <Stack>
+              <StackItem>
+                <SpecialDate
+                  timestamp={EPOCH_IN_UNIX + 1000000}
+                  reason="Meganium (one million seconds)"
+                />
+              </StackItem>
+              <StackItem>
+                <SpecialDate
+                  timestamp={EPOCH_IN_UNIX + 123456789}
+                  reason="123,456,789 seconds"
+                />
+              </StackItem>
+              <StackItem>
+                <SpecialDate
+                  timestamp={EPOCH_IN_UNIX + 1000000000}
+                  reason="Billenium (one billion seconds)"
+                />
+              </StackItem>
+            </Stack>
           </Stack>
           <Stack
             spacing={4}
