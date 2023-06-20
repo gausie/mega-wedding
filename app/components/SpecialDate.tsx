@@ -1,6 +1,6 @@
 type Props = { timestamp: number; reason: string };
 
-const FORMAT = new Intl.DateTimeFormat(undefined, {
+const FORMAT = new Intl.DateTimeFormat("en-GB", {
   dateStyle: "full",
   timeStyle: "long",
 });
