@@ -1,9 +1,9 @@
 import { HStack, Input, Radio, RadioGroup } from "@chakra-ui/react";
-import type { Database } from "~/types/supabase";
 import RSVPContainer from "./RSVPContainer";
+import { Invitee } from "../types";
 
 type Props = {
-  invitee: Database["public"]["Tables"]["guests"]["Row"];
+  invitee: Invitee;
   whichKey: "considering" | "attending";
   disabled?: boolean;
 };

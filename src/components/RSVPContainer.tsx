@@ -1,9 +1,9 @@
 import { Grid, Text } from "@chakra-ui/react";
 import React from "react";
-import type { Database } from "~/types/supabase";
+import { Invitee } from "../types";
 
 type Props = {
-  invitee: Database["public"]["Tables"]["guests"]["Row"];
+  invitee: Invitee;
   children: React.ReactNode;
   templateColumns?: string;
 };
