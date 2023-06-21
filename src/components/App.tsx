@@ -1,4 +1,3 @@
-import type { MetaFunction } from "@remix-run/node";
 import {
   Container,
   Heading,
@@ -8,15 +7,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import Header from "~/components/Header";
+import Header from "./Header";
 import { useEffect, useState } from "react";
-import TimeSinceLaunch from "~/components/TimeSinceLaunch";
-import Timestamp from "~/components/Timestamp";
-import { SpecialDate } from "~/components/SpecialDate";
-
-export const meta: MetaFunction = () => ({
-  title: "Hailey and Sam's Wedding | Zislis-Gaus Epoch",
-});
+import TimeSinceLaunch from "./TimeSinceLaunch";
+import Timestamp from "./Timestamp";
+import { SpecialDate } from "./SpecialDate";
 
 const EPOCH_IN_UNIX = 1687097995;
 

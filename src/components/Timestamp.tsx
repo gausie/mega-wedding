@@ -1,4 +1,4 @@
-import Alert from "~/components/Alert";
+import Alert from "./Alert";
 import { Suspense } from "react";
 
 type Props = { timestamp: number };
