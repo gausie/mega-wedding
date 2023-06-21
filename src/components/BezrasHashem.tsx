@@ -7,7 +7,7 @@ export default function BezrasHashem({ top = 2, right = 4 }) {
       top={top}
       right={right}
       title="B'ezras Hashem"
-      translate="no"
+      className="notranslate"
     >
       <Text fontSize={["sm", "xl"]} variant="hebrew">
         ב״ה
