@@ -1773,10 +1773,12 @@ csstype@^3.0.11, csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.2.tgz#1d4bf9d572f11c14031f0436e1c10bc1f571f50b"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
-datebook@^8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/datebook/-/datebook-8.0.1.tgz#6345091baebbe0fa202bb82fe8f8abb481eaeb6f"
-  integrity sha512-qdM9rULfZ/IoDzPW5FrMSXwrL5uBbk1WgVcIj5xwaneeZLZqaIggKjWzODWfk5waLQt7PamPP3s+lLv4cEPsrw==
+datebook@^7.0.8:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/datebook/-/datebook-7.1.2.tgz#9bfe04a49bf27df996c08fa0646389aff5c22c65"
+  integrity sha512-vO2HiydgWOBmT04P9gpDJqto+UUXgAH/JQq3HghbhLT8BgphYqmkN3oVcTPERlG2QUizzkr7e5rbY41r9PQqGg==
+  dependencies:
+    file-saver "^2.0.5"
 
 debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
   version "4.3.4"
@@ -2017,6 +2019,11 @@ file-entry-cache@^6.0.1:
   integrity sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==
   dependencies:
     flat-cache "^3.0.4"
+
+file-saver@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+  integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
 
 fill-range@^7.0.1:
   version "7.0.1"
